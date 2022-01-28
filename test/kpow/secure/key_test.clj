@@ -1,7 +1,6 @@
 (ns kpow.secure.key-test
   (:require [clojure.test :refer [deftest is]]
-            [kpow.secure.key :as key])
-  (:import (java.nio.charset StandardCharsets)))
+            [kpow.secure.key :as key]))
 
 (deftest key-gen-and-export-import
 
