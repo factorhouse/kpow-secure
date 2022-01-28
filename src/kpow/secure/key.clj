@@ -49,9 +49,9 @@
       errors (log/info (str "\n\n" errors))
       (or help (not generate)) (log/info (str "\n\n" summary))
       (and generate (not passfile)) (log/info "\n\n  required: --passfile PASSPHRASE-FILE  File containing key passphrase")
-      :default (log/info (str "\n\n"
-                              "Kpow Secure Key:\n"
-                              "----------------\n\n"
-                              (export-key (secret-key (slurp passfile)))
-                              "\n\n"
-                              "Save this key, it cannot be retrieved later.")))))
+      :else (log/info (str "\n\n"
+                           "Kpow Secure Key:\n"
+                           "----------------\n\n"
+                           (export-key (secret-key (slurp passfile)))
+                           "\n\n"
+                           "Save this key, it cannot be retrieved later.")))))

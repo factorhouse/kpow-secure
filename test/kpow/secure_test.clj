@@ -1,5 +1,5 @@
 (ns kpow.secure-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest is]]
             [kpow.secure :as secure]
             [kpow.secure.key :as key])
   (:import (java.nio.charset StandardCharsets)))
