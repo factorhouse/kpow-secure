@@ -9,7 +9,7 @@
 
 (deftest full-trip-and-variants
 
-  (let [secret-key (key/secret-key "aquickredfox" (.getBytes "some-salt" (StandardCharsets/UTF_8)))]
+  (let [secret-key (key/secret-key "aquickredfox" "some-salt")]
 
     (is (= sample-input
            (->> (secure/encoded-payload secret-key sample-input)
