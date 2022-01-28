@@ -11,7 +11,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
 ## Capabilities
 
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2
- * Plain-text payload encryption / decryption
+ * Payload with random IV encryption / decryption
  * Base64 key serialization / deserialization
  * CLI interface for key generation and encryption
 
