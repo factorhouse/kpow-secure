@@ -41,7 +41,7 @@
     * Cipher text"
   [^SecretKey secret-key ^String plain-text]
   (let [payload-iv           (random-iv)
-        payload-iv-bytes     (.getIV payload-iv)
+        payload-iv-bytes     (.getIV ^IvParameterSpec payload-iv)
         payload-bytes        (cipher-bytes secret-key payload-iv plain-text)
         payload-iv-length    (count payload-iv-bytes)
         payload-bytes-length (count payload-bytes)
@@ -52,7 +52,7 @@
     (.put buffer ^"[B" payload-bytes)
     (String. (.encode (Base64/getEncoder) (.array buffer)) StandardCharsets/UTF_8)))
 
-(defn decoded-message
+(defn decoded-payload
   "Validate the payload parts, then produce plain-text original of input cipher-text"
   [^SecretKey secret-key ^String encoded-payload]
   (let [buffer          (->> (.getBytes encoded-payload StandardCharsets/UTF_8)

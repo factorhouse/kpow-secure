@@ -13,19 +13,19 @@
 
     (is (= sample-input
            (->> (secure/encoded-payload secret-key sample-input)
-                (secure/decoded-message secret-key))))
+                (secure/decoded-payload secret-key))))
 
     (is (= sample-input
            (->> (secure/encoded-payload secret-key sample-input)
-                (secure/decoded-message (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=")))))
+                (secure/decoded-payload (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=")))))
 
     (is (= sample-input
            (->> (secure/encoded-payload (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=") sample-input)
-                (secure/decoded-message secret-key))))
+                (secure/decoded-payload secret-key))))
 
     (is (= sample-input
            (->> (secure/encoded-payload (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=") sample-input)
-                (secure/decoded-message (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=")))))
+                (secure/decoded-payload (key/import-key "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=")))))
 
     ;; the random IV guarantees (well almost) different payload even with the same key when encoded for a second time
     (is (not= (secure/encoded-payload secret-key sample-input)

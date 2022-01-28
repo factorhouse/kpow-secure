@@ -7,15 +7,14 @@
                  [org.clojure/tools.logging "1.2.4"]
                  [ch.qos.logback/logback-classic "1.2.10"]]
 
-  :aliases {"fmt"   ["cljfmt" "check"]
-            "kondo" ["run" "-m" "clj-kondo.main" "--lint" "src:test" "--parallel"]}
-
   :profiles {:dev {:plugins      [[lein-cljfmt "0.8.0"]]
                    :dependencies [[clj-kondo "2022.01.15"]]}}
 
-  :source-paths ["src"]
-  :test-paths ["test"]
-
-  :javac-options ["-target" "8" "-source" "8" "-Xlint:-options"]
+  :aliases {"smoke" ["do"
+                     ["clean"]
+                     ["check"]
+                     ["test"]
+                     ["cljfmt" "check"]
+                     ["run" "-m" "clj-kondo.main" "--lint" "src:test" "--parallel"]]}
 
   :pedantic? :abort)
