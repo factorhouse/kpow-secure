@@ -132,3 +132,66 @@ Key file written to: secure/passphrase.txt.key
 
 This key can be regenerated with the same passphrase and salt.
 ```
+
+## Payload Encryption
+
+* Show the help menu
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
+```
+
+```bash
+21:41:52.561 [main] INFO kpow.secure -
+
+  -e, --encrypt TEXT-FILE     Encrypt plain text file
+  -d, --decrypt PAYLOAD-FILE  Decrypt payload file
+  -p, --keyfile KEY-FILE      (required) File containing base64 encryption key
+  -h, --help
+```
+
+* Encrypt a plain-text file
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt secure/config.env --keyfile secure/passphrase.txt.key
+```
+
+```bash
+21:44:58.533 [main] INFO kpow.secure -
+
+Plain text encrypted: secure/config.env > secure/config.env.payload
+```
+
+* Confirm the encrypted payload
+
+```bash
+cat secure/config.env.payload
+```
+
+```bash
+ARBqlg5MtXNJJbJIElZYiN189bfavvfTlhz2qLYqMDyY0s+aErl3znh/fbcErByfFwukelX1ooHvwWD7MzE6KkIRsfHaOOOL6fozzDJsc3fJlVmnLs25o3LBuu+7OFpxNIcKg3zu6FUvZ992z75Sj8xjtJtNcEAdoJJEBQWQYu0AbX3GoJE7ALrPr45vg8LHA3Iy+pgj5qHAqNCABza0rjrNsUa3l0DgM0SwC83LwLEW7a4ldAtXNxlwk4UYkLIP1e+ipVtVz58dllWZS7WS87oj%
+```
+
+* Decrypt the payload
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt secure/config.env.payload --keyfile secure/passphrase.txt.key
+```
+
+```bash
+21:46:57.218 [main] INFO kpow.secure -
+
+Payload decrypted: secure/config.env.payload > secure/config.env.payload.plain
+```
+
+* Confirm the decrypted plain-text
+
+```bash
+cat secure/config.env.payload.plain
+```
+
+```bash
+SECURITY_PROTOCOL=SASL_PLAINTEXT
+SASL_MECHANISM=PLAIN
+SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="kpow" password="kpow-secret";
+```
