@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
-This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
+This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io) and is optimized for low-volume encryption of local files.
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
 
@@ -43,4 +43,27 @@ Produce a key from Base64 text
 ```clojure
 (key/import-key "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok=")
 => #object[javax.crypto.spec.SecretKeySpec 0x3d2b5928 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
+```
+
+## Payload Encryption
+
+Produce an encrypted payload with random initialization vector from key and plaintext
+
+```clojure
+(secure/encoded-payload
+ (key/secret-key "aquickredfox" "some-salt")
+ (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
+      "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
+=> "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
+```
+
+## Payload Decryption
+
+Produce plain text from key and encrypted payload
+
+```clojure
+(secure/decoded-payload
+ (key/secret-key "aquickredfox" "some-salt")
+ "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=")
+=> "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
 ```
