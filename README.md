@@ -78,7 +78,7 @@ You can uberjar this project, or include the library within your own project and
 
 ### Key Generation
 
-The passphrase is always read from a local file, to ensure it is not observable in your shell history.
+The passphrase and key are read from a local files to ensure they are not observable in your shell history.
 
 * Show the help menu
 
