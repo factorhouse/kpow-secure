@@ -17,14 +17,14 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ## Key Generation
 
-Generate a key with a random salt (not reproducible from inputs)
+* Generate a key with a random salt (not reproducible from inputs)
 
 ```clojure
 (key/secret-key "aquickredfox")
 => #object[javax.crypto.spec.SecretKeySpec 0x9a9f63e "javax.crypto.spec.SecretKeySpec@15b1a"]
 ```
 
-Generate a key with a chosen salt (reproducible from inputs)
+* Generate a key with a chosen salt (reproducible from inputs)
 
 ```clojure
 (key/secret-key "aquickredfox" "asalt")
@@ -33,14 +33,14 @@ Generate a key with a chosen salt (reproducible from inputs)
 
 ## Key Serialization
 
-Serialize a key to Base64 text
+* Serialize a key to Base64 text
 
 ```clojure
 (key/export-key (key/secret-key "aquickredfox" "asalt"))
 => "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok="
 ```
 
-Produce a key from Base64 text
+* Produce a key from Base64 text
 
 ```clojure
 (key/import-key "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok=")
@@ -49,7 +49,7 @@ Produce a key from Base64 text
 
 ## Payload Encryption
 
-Produce an encrypted payload with random initialization vector from key and plaintext
+* Produce an encrypted payload with random initialization vector from key and plaintext
 
 ```clojure
 (secure/encoded-payload
@@ -61,7 +61,7 @@ Produce an encrypted payload with random initialization vector from key and plai
 
 ## Payload Decryption
 
-Produce plain text from key and encrypted payload
+* Produce plain text from key and encrypted payload
 
 ```clojure
 (secure/decoded-payload
@@ -78,7 +78,9 @@ You can uberjar this project, or include the library within your own project and
 
 ### Key Generation
 
-Show the help menu
+The passphrase is always read from a local file, to ensure it is not observable in your shell history.
+
+* Show the help menu
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
@@ -90,7 +92,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
   -h, --help
 ```
 
-Generate a key with random salt
+* Generate a key with random salt
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt                                                             ✔  10271  16:29:49
@@ -104,7 +106,7 @@ Kpow Secure Key:
 Random salt used, this key cannot be regenerated.
 ```
 
-Generate a key with chosen salt
+* Generate a key with chosen salt
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt --salt abcdef
