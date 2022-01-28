@@ -1,5 +1,8 @@
 (ns kpow.secure
-  (:require [clojure.tools.cli :as cli])
+  (:require [clojure.string :as str]
+            [clojure.tools.cli :as cli]
+            [clojure.tools.logging :as log]
+            [kpow.secure.key :as key])
   (:import (java.nio ByteBuffer)
            (java.nio.charset StandardCharsets)
            (java.security SecureRandom)
@@ -71,9 +74,26 @@
         (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
 (def cli-options
-  ;; An option with a required argument
-  [["-e" "--encrypt CONFIG" "Config"]
+  [["-e" "--encrypt TEXT-FILE" "Encrypt plain text file"]
+   ["-d" "--decrypt PAYLOAD-FILE" "Decrypt payload file"]
+   ["-p" "--keyfile KEY-FILE" "(required) File containing base64 encryption key"]
    ["-h" "--help"]])
 
 (defn -main [& args]
-  (prn (cli/parse-opts args cli-options)))
+  (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)
+        {:keys [encrypt decrypt keyfile help]} options]
+    (try
+      (cond
+        errors (log/info (str "\n\n" errors))
+        (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
+        (and (or encrypt decrypt) (not keyfile)) (log/info "\n\n  required: --keyfile KEY-FILE  File containing base64 encryption key")
+        encrypt (do (->> (slurp encrypt)
+                         (encoded-payload (key/import-key (str/trim (slurp keyfile))))
+                         (spit (str encrypt ".payload")))
+                    (log/infof "\n\nPlain text encrypted: %s > %s" encrypt (str encrypt ".payload")))
+        decrypt (do (->> (slurp decrypt)
+                         (decoded-payload (key/import-key (str/trim (slurp keyfile))))
+                         (spit (str decrypt ".plaintext")))
+                    (log/infof "\n\nPayload decrypted: %s > %s" decrypt (str decrypt ".plaintext"))))
+      (catch Exception ex
+        (log/errorf ex "\n\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))

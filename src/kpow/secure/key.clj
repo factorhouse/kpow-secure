@@ -45,7 +45,6 @@
        (SecretKeySpec. key-enc-algorithm))))
 
 (def cli-options
-  ;; An option with a required argument
   [["-g" "--generate" "Generate a new secure key"]
    ["-p" "--passfile PASSPHRASE-FILE" "(required) File containing key passphrase"]
    ["-s" "--salt SALT" "(optional) Salt to use with key generation, random if none provided"]
