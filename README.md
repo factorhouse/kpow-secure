@@ -2,7 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
-This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io) and is optimized for low-volume encryption of local files.
+This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
+
+The chosen algorithms are suited to low-volume encryption of local files.
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
 
