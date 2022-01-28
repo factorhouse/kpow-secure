@@ -13,3 +13,4 @@ pom.xml.asc
 *.iml
 .DS_Store
 .clj-kondo/.cache/
+/secure
