@@ -93,7 +93,7 @@
                     (log/infof "\n\nPlain text encrypted: %s > %s" encrypt (str encrypt ".payload")))
         decrypt (do (->> (slurp decrypt)
                          (decoded-payload (key/import-key (str/trim (slurp keyfile))))
-                         (spit (str decrypt ".plaintext")))
-                    (log/infof "\n\nPayload decrypted: %s > %s" decrypt (str decrypt ".plaintext"))))
+                         (spit (str decrypt ".plain")))
+                    (log/infof "\n\nPayload decrypted: %s > %s" decrypt (str decrypt ".plain"))))
       (catch Exception ex
         (log/errorf ex "\n\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))

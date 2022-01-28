@@ -57,11 +57,16 @@
       errors (log/info (str "\n\n" errors))
       (or help (not generate)) (log/info (str "\n\n" summary))
       (and generate (not passfile)) (log/info "\n\n  required: --passfile PASSPHRASE-FILE  File containing key passphrase")
-      :else (log/info (str "\n\n"
-                           "Kpow Secure Key:\n"
-                           "----------------\n\n"
-                           (export-key (secret-key (slurp passfile) salt))
-                           "\n\n"
-                           (if salt
-                             "This key can be regenerated with the same passphrase and salt."
-                             "Random salt used, this key cannot be regenerated."))))))
+      :else (let [secure-key (export-key (secret-key (slurp passfile) salt))]
+              (spit (str passfile ".key") secure-key)
+              (log/info (str "\n\n"
+                             "Kpow Secure Key:\n"
+                             "----------------\n\n"
+                             secure-key
+                             "\n\n"
+                             "Key file written to: "
+                             (str passfile ".key")
+                             "\n\n"
+                             (if salt
+                               "This key can be regenerated with the same passphrase and salt."
+                               "Random salt used, this key cannot be regenerated.")))))))
