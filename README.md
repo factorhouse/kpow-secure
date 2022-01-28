@@ -84,6 +84,8 @@ The passphrase is always read from a local file, to ensure it is not observable 
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
+```
+```bash
 16:29:49.803 [main] INFO kpow.secure.key -
 
   -g, --generate                  Generate a new secure key
@@ -95,7 +97,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 * Generate a key with random salt
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt                                                             ✔  10271  16:29:49
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt
 16:30:53.994 [main] INFO kpow.secure.key -
 
 Kpow Secure Key:
