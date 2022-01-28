@@ -85,6 +85,7 @@ The passphrase is always read from a local file, to ensure it is not observable 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 ```
+
 ```bash
 16:29:49.803 [main] INFO kpow.secure.key -
 
@@ -94,30 +95,40 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
   -h, --help
 ```
 
-* Generate a key with random salt
+* Generate a key with random salt (output written to stdout and file)
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt
-16:30:53.994 [main] INFO kpow.secure.key -
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile secure/passphrase.txt
+```
+
+```bash
+21:35:08.889 [main] INFO kpow.secure.key -
 
 Kpow Secure Key:
 ----------------
 
-+mdHJeHGw7+SeF1yrClRdp2H672xn8UefnmwDmjBU84=
+mO3TWj8Z7ANjC75NK4ufNP6n2I1W9JEtNUeWUGABxN0=
+
+Key file written to: secure/passphrase.txt.key
 
 Random salt used, this key cannot be regenerated.
 ```
 
-* Generate a key with chosen salt
+* Generate a key with chosen salt (output written to stdout and file)
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile pass.txt --salt abcdef
-16:31:32.027 [main] INFO kpow.secure.key -
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile secure/passphrase.txt --salt abcdef
+```
+
+```bash
+21:36:45.911 [main] INFO kpow.secure.key -
 
 Kpow Secure Key:
 ----------------
 
 M3dREc8AHDLPxv8DoAMaK51EO+yZizkcvTlzRjv2kx4=
+
+Key file written to: secure/passphrase.txt.key
 
 This key can be regenerated with the same passphrase and salt.
 ```
