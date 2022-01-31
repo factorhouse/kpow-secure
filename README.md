@@ -287,7 +287,7 @@ We provide a basic Decoder API in Java to allow encrypted payloads to be decoded
 * Decode payload text with a serialized key
 
 ```Java
-Properties myProps = Decoder.properties("base64-key-text", "payload-text");
+Properties myProps = Decoder.properties("base64-key-text", "base64-payload-text");
 ```
 
 * Decode payload file with a serialized key file
