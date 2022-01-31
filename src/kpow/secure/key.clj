@@ -44,29 +44,33 @@
        (.getEncoded)
        (SecretKeySpec. key-enc-algorithm))))
 
+(defn generate-key
+  [pass-file salt out-file]
+  (let [secure-key (export-key (secret-key (slurp pass-file) salt))]
+    (spit out-file secure-key)
+    (log/info (str "\n\n"
+                   "Kpow Secure Key:\n"
+                   "----------------\n\n"
+                   secure-key
+                   "\n\n"
+                   "Key file written to: "
+                   out-file
+                   "\n\n"
+                   (if salt
+                     "This key can be regenerated with the same passphrase and salt."
+                     "Random salt used, this key cannot be regenerated.")))))
+
 (def cli-options
-  [["-g" "--generate" "Generate a new secure key"]
-   ["-p" "--passfile PASSPHRASE-FILE" "(required) File containing key passphrase"]
+  [["-p" "--pass-file PASSPHRASE-FILE" "(required) File containing key passphrase"]
    ["-s" "--salt SALT" "(optional) Salt to use with key generation, random if none provided"]
+   ["-o" "--out-file OUT-FILE" "(optional) File for key output, default: [PASSPHRASE-FILE].key"]
    ["-h" "--help"]])
 
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)
-        {:keys [generate passfile salt help]} options]
+        {:keys [pass-file out-file salt help]} options]
     (cond
       errors (log/info (str "\n\n" errors))
-      (or help (not generate)) (log/info (str "\n\n" summary))
-      (and generate (not passfile)) (log/info "\n\n  required: --passfile PASSPHRASE-FILE  File containing key passphrase")
-      :else (let [secure-key (export-key (secret-key (slurp passfile) salt))]
-              (spit (str passfile ".key") secure-key)
-              (log/info (str "\n\n"
-                             "Kpow Secure Key:\n"
-                             "----------------\n\n"
-                             secure-key
-                             "\n\n"
-                             "Key file written to: "
-                             (str passfile ".key")
-                             "\n\n"
-                             (if salt
-                               "This key can be regenerated with the same passphrase and salt."
-                               "Random salt used, this key cannot be regenerated.")))))))
+      (or help (not pass-file)) (log/info (str "\n\n" summary))
+      (not pass-file) (log/info "\n\n  required: --passfile PASSPHRASE-FILE  File containing key passphrase")
+      :else (generate-key pass-file salt (or out-file (str pass-file ".key"))))))
