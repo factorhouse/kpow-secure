@@ -291,7 +291,7 @@ Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zz
 ```
 
 ```clojure
-(example REPL output here, the Java API returns this as a java.util.Properties object)
+;; Java API returns this as a java.util.Properties object
 => 
 {"SSL_TRUSTSTORE_PASSWORD" "trustpass1234", 
  "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
@@ -304,7 +304,7 @@ Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/confi
 ```
 
 ```clojure
-(example REPL output here, the Java API returns this as a java.util.Properties object)
+;; Java API returns this as a java.util.Properties object
 => 
 {"SSL_TRUSTSTORE_PASSWORD" "trustpass1234", 
  "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
