@@ -282,7 +282,7 @@ SSL_TRUSTSTORE_PASSWORD=password1234
 
 Kpow Secure is implemented in our langauge of choice, Clojure.
 
-We provide a basic Decoder API in Java to allow secrets to be easily decoded in `java.util.Properties`
+We provide a basic Decoder API in Java to allow encrypted payloads to be decoded to `java.util.Properties`
 
 * Decode payload text with a serialized key
 
