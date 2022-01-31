@@ -63,8 +63,11 @@
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)
         {:keys [pass-file out-file salt help]} options]
-    (cond
-      errors (log/info (str "\n\n" errors))
-      (or help (not pass-file)) (log/info (str "\n\n" summary))
-      (not pass-file) (log/info "\n\n  required: --passfile PASSPHRASE-FILE  File containing key passphrase")
-      :else (generate-key pass-file salt (or out-file (str pass-file ".key"))))))
+    (try
+      (cond
+        errors (log/error (str "\n\n" errors))
+        (or help (not pass-file)) (log/info (str "\n\n" summary))
+        (not pass-file) (log/info "\n\nRequired: --passfile PASSPHRASE-FILE  File containing key passphrase")
+        :else (generate-key pass-file salt (or out-file (str pass-file ".key"))))
+      (catch Exception ex
+        (log/errorf ex "\nFailed to generate key")))))

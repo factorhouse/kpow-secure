@@ -78,14 +78,14 @@
   (->> (slurp in-file)
        (encoded-payload (key/import-key (str/trim (slurp key-file))))
        (spit out-file))
-  (log/infof "\nencrypted: %s > %s" in-file out-file))
+  (log/infof "\n\nEncrypted: %s > %s" in-file out-file))
 
 (defn decrypt-file
   [key-file in-file out-file]
   (->> (slurp in-file)
        (decoded-payload (key/import-key (str/trim (slurp key-file))))
        (spit out-file))
-  (log/infof "\ndecrypted: %s > %s" in-file out-file))
+  (log/infof "\n\nDecrypted: %s > %s" in-file out-file))
 
 (def cli-options
   [["-e" "--encrypt FILE" "File to encrypt"]
@@ -99,10 +99,10 @@
         {:keys [encrypt decrypt key-file out-file help]} options]
     (try
       (cond
-        errors (log/error errors)
-        (or help (not (or encrypt decrypt))) (log/info (str "\n" summary))
-        (and (or encrypt decrypt) (not key-file)) (log/info "\nrequired: --keyfile KEY-FILE  File containing base64 encryption key")
+        errors (log/error (str "\n\n" errors))
+        (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
+        (and (or encrypt decrypt) (not key-file)) (log/info "\n\nRequired: --keyfile KEY-FILE  File containing base64 encryption key")
         encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".enc")))
         decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".dec"))))
       (catch Exception ex
-        (log/errorf ex "\nfailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
+        (log/errorf ex "\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
