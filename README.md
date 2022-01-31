@@ -107,7 +107,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
  "SSL_TRUSTSTORE_PASSWORD" "password1234"}
 ```        
 
-* See the dev-resources/secure/props.env.aes payload for an example of the flexibility of Java Properties encoding
+* See `dev-resources/secure/props.env.aes` for an example of the flexibility of Java Properties encoding
 
 ```clojure
 (-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")
