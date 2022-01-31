@@ -51,8 +51,9 @@
     (log/info (format "\n\nKpow Secure Key:\n----------------\n\n%s\n\nKey file written to: %s\n\n%s"
                       secure-key
                       out-file
-                      (if salt "This key can be regenerated with the same passphrase and salt."
-                               "Random salt used, this key cannot be regenerated.")))))
+                      (if salt
+                        "This key can be regenerated with the same passphrase and salt."
+                        "Random salt used, this key cannot be regenerated.")))))
 
 (def cli-options
   [["-p" "--pass-file PASSPHRASE-FILE" "(required) File containing key passphrase"]
