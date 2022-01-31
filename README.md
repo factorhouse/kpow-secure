@@ -154,35 +154,35 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
 * Encrypt a plain-text file
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt secure/config.env --keyfile secure/passphrase.txt.key
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
 ```
 
 ```bash
-21:44:58.533 [main] INFO kpow.secure -
+19:56:34.117 [main] INFO kpow.secure -
 
-Plain text encrypted: secure/config.env > secure/config.env.payload
+Encrypted: dev-resources/secure/config.env > dev-resources/secure/config.env.aes
 ```
 
 * Confirm the encrypted payload
 
 ```bash
-cat secure/config.env.payload
+cat dev-resources/secure/config.env.aes
 ```
 
 ```bash
-ARBqlg5MtXNJJbJIElZYiN189bfavvfTlhz2qLYqMDyY0s+aErl3znh/fbcErByfFwukelX1ooHvwWD7MzE6KkIRsfHaOOOL6fozzDJsc3fJlVmnLs25o3LBuu+7OFpxNIcKg3zu6FUvZ992z75Sj8xjtJtNcEAdoJJEBQWQYu0AbX3GoJE7ALrPr45vg8LHA3Iy+pgj5qHAqNCABza0rjrNsUa3l0DgM0SwC83LwLEW7a4ldAtXNxlwk4UYkLIP1e+ipVtVz58dllWZS7WS87oj%
+ARD9I/BlocgOwYfsW/oXrJtY/u2AnMWm/ewWIm7iDJrSkkGnQbM38ZbCM1hWfYZLHpIo99LATlgtnR4rcSjDIEY01wZTsZUyxLXKMoH1sX31FwoywxjmGPooMQg2d6VIHpLGeTsrmD1HQ2U9miIr01w5moMy4U6/UTAm1o+f8xGmR5l2sMj59tddK5VTC9BRs0L4ptxj+bR/QhItwL2qnqExnsEBTUOwrrTiHZySXhr8iJWvD1WIFL374KmneLxFhqMuIiY1D3v9/ChlyCojvh5JR6pJ3ZuIK3HP2YbjZSTSliz7mV5hMI021E4MN8hWE4L3poLhHY5KWVVb6Ma5kQAt2M5t9Ij8HkdtjMgxrva+kCtXUg81F9WoWmsc3xQcY5o=
 ```
 
 * Decrypt the payload
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt secure/config.env.payload --keyfile secure/passphrase.txt.key
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt dev-resources/secure/config.env.aes --key-file dev-resources/secure/passphrase.txt.key
 ```
 
 ```bash
-21:46:57.218 [main] INFO kpow.secure -
+19:58:27.901 [main] INFO kpow.secure -
 
-Payload decrypted: secure/config.env.payload > secure/config.env.payload.plain
+Decrypted: dev-resources/secure/config.env.aes > dev-resources/secure/config.env.aes.plain
 ```
 
 * Confirm the decrypted plain-text
@@ -195,4 +195,6 @@ cat secure/config.env.payload.plain
 SECURITY_PROTOCOL=SASL_PLAINTEXT
 SASL_MECHANISM=PLAIN
 SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="kpow" password="kpow-secret";
+SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks
+SSL_TRUSTSTORE_PASSWORD=password1234
 ```
