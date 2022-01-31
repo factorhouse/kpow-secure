@@ -287,8 +287,15 @@ We provide a basic Decoder API in Java to allow encrypted payloads to be decoded
 * Decode payload text with a serialized key
 
 ```Java
-Properties myProps = Decoder.properties("base64-key-text", "base64-payload-text");
+Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
 ```
+
+```clojure
+(example REPL output here, the Java API returns this as a java.util.Properties object)
+=> 
+{"SSL_TRUSTSTORE_PASSWORD" "trustpass1234", 
+ "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
+``` 
 
 * Decode payload file with a serialized key file
 
@@ -296,3 +303,9 @@ Properties myProps = Decoder.properties("base64-key-text", "base64-payload-text"
 Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/config.env.aes");
 ```
 
+```clojure
+(example REPL output here, the Java API returns this as a java.util.Properties object)
+=> 
+{"SSL_TRUSTSTORE_PASSWORD" "trustpass1234", 
+ "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
+``` 
