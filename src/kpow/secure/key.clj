@@ -1,11 +1,12 @@
 (ns kpow.secure.key
-  (:require [clojure.tools.cli :as cli]
+  (:require [clojure.string :as str]
+            [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log])
-  (:import (javax.crypto SecretKey SecretKeyFactory)
+  (:import (java.security SecureRandom)
+           (javax.crypto SecretKey SecretKeyFactory)
            (javax.crypto.spec SecretKeySpec PBEKeySpec)
-           (java.security SecureRandom)
-           (java.util Base64)
-           (java.nio.charset StandardCharsets))
+           (java.nio.charset StandardCharsets)
+           (java.util Base64))
   (:gen-class))
 
 (def key-enc-algorithm "AES")
@@ -21,7 +22,7 @@
 (defn import-key
   "Interpret Base64 encoded text as a SecretKeySpec"
   [^String key-text]
-  (SecretKeySpec. (.decode (Base64/getDecoder) key-text) key-enc-algorithm))
+  (SecretKeySpec. (.decode (Base64/getDecoder) (str/trim key-text)) key-enc-algorithm))
 
 (defn random-salt
   []

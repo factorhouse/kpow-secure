@@ -1,14 +1,14 @@
 (ns kpow.secure
-  (:require [clojure.string :as str]
-            [clojure.tools.cli :as cli]
+  (:require [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log]
             [kpow.secure.key :as key])
-  (:import (java.nio ByteBuffer)
+  (:import (java.io StringReader)
+           (java.nio ByteBuffer)
            (java.nio.charset StandardCharsets)
            (java.security SecureRandom)
            (javax.crypto SecretKey Cipher)
            (javax.crypto.spec IvParameterSpec)
-           (java.util Base64))
+           (java.util Base64 Properties))
   (:gen-class))
 
 ;; scheme version static as v1 for now and encoded into the message as first byte
@@ -74,18 +74,28 @@
         (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
 (defn encrypt-file
-  [key-file in-file out-file]
-  (->> (slurp in-file)
-       (encoded-payload (key/import-key (str/trim (slurp key-file))))
-       (spit out-file))
-  (log/infof "\n\nEncrypted: %s > %s" in-file out-file))
+  ([key-file in-file]
+   (encoded-payload (key/import-key (slurp key-file)) (slurp in-file)))
+  ([key-file in-file out-file]
+   (spit out-file (encrypt-file key-file in-file))
+   (log/infof "\n\nEncrypted: %s > %s" in-file out-file)))
 
 (defn decrypt-file
-  [key-file in-file out-file]
-  (->> (slurp in-file)
-       (decoded-payload (key/import-key (str/trim (slurp key-file))))
-       (spit out-file))
-  (log/infof "\n\nDecrypted: %s > %s" in-file out-file))
+  ([key-file in-file]
+   (decoded-payload (key/import-key (slurp key-file)) (slurp in-file)))
+  ([key-file in-file out-file]
+   (spit out-file (decrypt-file key-file in-file))
+   (log/infof "\n\nDecrypted: %s > %s" in-file out-file)))
+
+(defn ->props
+  [text]
+  (let [props (Properties.)]
+    (.load props (StringReader. text))
+    props))
+
+(defn ->map
+  [text]
+  (into {} (->props text)))
 
 (def cli-options
   [["-e" "--encrypt FILE" "File to encrypt"]
