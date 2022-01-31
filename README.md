@@ -15,6 +15,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
  * Base64 key serialization / deserialization of keys for import / export
  * Payload interpretation (Clojure Map or Java Properties)
  * CLI interface for key generation and encryption
+ * Java API for secret decryption / interop
 
 ## Key Generation
 
@@ -62,7 +63,20 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ## Payload Encryption
 
-* Produce an encrypted payload with random initialization vector from key and plaintext
+* Encrypted payload from serialized key and plain text
+
+```clojure
+(secure/encrypt
+ "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
+ (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
+      "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
+```
+
+```clojure
+=> "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
+```
+
+* Encrypted payload from SecretKey and plain text
 
 ```clojure
 (secure/encoded-payload
@@ -77,7 +91,19 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ## Payload Decryption
 
-* Produce plain text from key and encrypted payload
+* Plain text from serialized key and encrypted payload
+
+```clojure
+(secure/decrypt
+ "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
+ "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=")
+```
+
+```clojure
+=> "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
+```
+
+* Plain text from SecretKey and encrypted payload
 
 ```clojure
 (secure/decoded-payload
