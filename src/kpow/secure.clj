@@ -73,16 +73,24 @@
         (.get buffer cypher-bytes)
         (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
+(defn encrypt
+  [key-text plain-text]
+  (encoded-payload (key/import-key key-text) plain-text))
+
 (defn encrypt-file
   ([key-file in-file]
-   (encoded-payload (key/import-key (slurp key-file)) (slurp in-file)))
+   (encrypt (slurp key-file) (slurp in-file)))
   ([key-file in-file out-file]
    (spit out-file (encrypt-file key-file in-file))
    (log/infof "\n\nEncrypted: %s > %s" in-file out-file)))
 
+(defn decrypt
+  [key-text encoded-payload]
+  (decoded-payload (key/import-key key-text) encoded-payload))
+
 (defn decrypt-file
   ([key-file in-file]
-   (decoded-payload (key/import-key (slurp key-file)) (slurp in-file)))
+   (decrypt (slurp key-file) (slurp in-file)))
   ([key-file in-file out-file]
    (spit out-file (decrypt-file key-file in-file))
    (log/infof "\n\nDecrypted: %s > %s" in-file out-file)))
@@ -112,7 +120,7 @@
         errors (log/error (str "\n\n" errors))
         (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
         (and (or encrypt decrypt) (not key-file)) (log/info "\n\nRequired: --keyfile KEY-FILE  File containing base64 encryption key")
-        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".aes")))
-        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".plain"))))
+        encrypt (encrypt key-file encrypt (or out-file (str encrypt ".aes")))
+        decrypt (decrypt key-file decrypt (or out-file (str decrypt ".plain"))))
       (catch Exception ex
         (log/errorf ex "\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))

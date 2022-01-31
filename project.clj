@@ -3,6 +3,7 @@
   :description "Secure Key Generation and Payload Encryption"
 
   :source-paths ["src"]
+  :java-source-paths ["src-java"]
   :test-paths ["test"]
 
   :dependencies [[org.clojure/clojure "1.10.3"]

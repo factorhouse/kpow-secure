@@ -1,7 +1,8 @@
 (ns kpow.secure-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [clojure.test :refer [deftest is testing]]
             [kpow.secure :as secure]
-            [kpow.secure.key :as key]))
+            [kpow.secure.key :as key])
+  (:import (io.kpow.secure Decoder)))
 
 (def sample-input (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
                        "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
@@ -54,4 +55,20 @@
             "ssl.truststore.location" "/ssl/truststore.jks"
             "ssl.truststore.password" "1234"}
            (-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")
-               (secure/->map))))))
+               (secure/->map))))
+
+    (testing "interop"
+
+      (is (= {"SASL_JAAS_CONFIG"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
+              "SASL_MECHANISM"          "PLAIN"
+              "SECURITY_PROTOCOL"       "SASL_PLAINTEXT"
+              "SSL_TRUSTSTORE_LOCATION" "/ssl/truststore.jks"
+              "SSL_TRUSTSTORE_PASSWORD" "password1234"}
+             (into {} (Decoder/properties (slurp "dev-resources/secure/passphrase.key") (slurp "dev-resources/secure/config.env.aes")))))
+
+      (is (= {"sasl.jaas.config"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
+              "sasl.mechanism"          "PLAIN"
+              "security.protocol"       "SASL_PLAINTEXT"
+              "ssl.truststore.location" "/ssl/truststore.jks"
+              "ssl.truststore.password" "1234"}
+             (into {} (Decoder/loadProperties "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")))))))
