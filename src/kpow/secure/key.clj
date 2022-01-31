@@ -48,17 +48,11 @@
   [pass-file salt out-file]
   (let [secure-key (export-key (secret-key (slurp pass-file) salt))]
     (spit out-file secure-key)
-    (log/info (str "\n\n"
-                   "Kpow Secure Key:\n"
-                   "----------------\n\n"
-                   secure-key
-                   "\n\n"
-                   "Key file written to: "
-                   out-file
-                   "\n\n"
-                   (if salt
-                     "This key can be regenerated with the same passphrase and salt."
-                     "Random salt used, this key cannot be regenerated.")))))
+    (log/info (format "\n\nKpow Secure Key:\n----------------\n\n%s\n\nKey file written to: %s\n\n%s"
+                      secure-key
+                      out-file
+                      (if salt "This key can be regenerated with the same passphrase and salt."
+                               "Random salt used, this key cannot be regenerated.")))))
 
 (def cli-options
   [["-p" "--pass-file PASSPHRASE-FILE" "(required) File containing key passphrase"]
