@@ -277,3 +277,22 @@ SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule require
 SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks
 SSL_TRUSTSTORE_PASSWORD=password1234
 ```
+
+## Java API
+
+Kpow Secure is implemented in our langauge of choice, Clojure.
+
+We provide a basic Decoder API in Java to allow secrets to be easily decoded in `java.util.Properties`
+
+* Decode payload text with a serialized key
+
+```Java
+Properties myProps = Decoder.properties("key-text", "payload-text");
+```
+
+* Decode payload file with a serialized key file
+
+```Java
+Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/config.env.aes");
+```
+
