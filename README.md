@@ -22,6 +22,9 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ```clojure
 (key/secret-key "aquickredfox")
+```
+
+```clojure
 => #object[javax.crypto.spec.SecretKeySpec 0x9a9f63e "javax.crypto.spec.SecretKeySpec@15b1a"]
 ```
 
@@ -29,6 +32,9 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ```clojure
 (key/secret-key "aquickredfox" "asalt")
+```
+
+```clojure
 => #object[javax.crypto.spec.SecretKeySpec 0x5c2ac756 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
 ```
 
@@ -93,6 +99,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
 ```
 
 ```
+=>
 {"SASL_JAAS_CONFIG"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
  "SASL_MECHANISM"          "PLAIN"
  "SECURITY_PROTOCOL"       "SASL_PLAINTEXT"
@@ -108,6 +115,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
 ```
 
 ```clojure
+=>
 {"sasl.jaas.config"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
  "sasl.mechanism"          "PLAIN"
  "security.protocol"       "SASL_PLAINTEXT"
