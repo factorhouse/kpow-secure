@@ -87,48 +87,48 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 ```
 
 ```bash
-16:29:49.803 [main] INFO kpow.secure.key -
+19:45:46.477 [main] INFO kpow.secure.key -
 
-  -g, --generate                  Generate a new secure key
-  -p, --passfile PASSPHRASE-FILE  (required) File containing key passphrase
-  -s, --salt SALT                 (optional) Salt to use with key generation, random if none provided
+  -p, --pass-file PASSPHRASE-FILE  (required) File containing key passphrase
+  -s, --salt SALT                  (optional) Salt to use with key generation, random if none provided
+  -o, --out-file OUT-FILE          (optional) File for key output, default: [PASSPHRASE-FILE].key
   -h, --help
 ```
 
-* Generate a key with random salt (output written to stdout and file)
+* Generate a key with random salt (output written to stdout and default key file)
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile secure/passphrase.txt
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt
 ```
 
 ```bash
-21:35:08.889 [main] INFO kpow.secure.key -
+19:46:50.912 [main] INFO kpow.secure.key -
 
 Kpow Secure Key:
 ----------------
 
-mO3TWj8Z7ANjC75NK4ufNP6n2I1W9JEtNUeWUGABxN0=
+nP+O/6xOu9+9+JZFYgfhS+R6x4OjVgToP9DlM1bx35g=
 
-Key file written to: secure/passphrase.txt.key
+Key file written to: dev-resources/secure/passphrase.txt.key
 
 Random salt used, this key cannot be regenerated.
 ```
 
-* Generate a key with chosen salt (output written to stdout and file)
+* Generate a key with chosen salt (output written to stdout and specific key file)
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --generate --passfile secure/passphrase.txt --salt abcdef
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt --salt abcdef --out-file dev-resources/secure/mykey.aes
 ```
 
 ```bash
-21:36:45.911 [main] INFO kpow.secure.key -
+19:48:01.933 [main] INFO kpow.secure.key -
 
 Kpow Secure Key:
 ----------------
 
-M3dREc8AHDLPxv8DoAMaK51EO+yZizkcvTlzRjv2kx4=
+88wRMz4DuaRWOmyKPb8IgmY4kZAyQvPiRVxUy79OgL8=
 
-Key file written to: secure/passphrase.txt.key
+Key file written to: dev-resources/secure/mykey.aes
 
 This key can be regenerated with the same passphrase and salt.
 ```
@@ -142,11 +142,12 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
 ```
 
 ```bash
-21:41:52.561 [main] INFO kpow.secure -
+19:49:12.446 [main] INFO kpow.secure -
 
-  -e, --encrypt TEXT-FILE     Encrypt plain text file
-  -d, --decrypt PAYLOAD-FILE  Decrypt payload file
-  -p, --keyfile KEY-FILE      (required) File containing base64 encryption key
+  -e, --encrypt FILE       File to encrypt
+  -d, --decrypt FILE       File to decrypt
+  -p, --key-file KEY-FILE  (required) File containing base64 encryption key
+  -o, --out-file OUT-FILE  (optional) File for encrypted/decrypted output, default: [FILE].(enc|dec)
   -h, --help
 ```
 
