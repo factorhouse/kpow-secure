@@ -102,7 +102,7 @@
         errors (log/error (str "\n\n" errors))
         (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
         (and (or encrypt decrypt) (not key-file)) (log/info "\n\nRequired: --keyfile KEY-FILE  File containing base64 encryption key")
-        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".enc")))
-        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".dec"))))
+        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".aes")))
+        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".plain"))))
       (catch Exception ex
         (log/errorf ex "\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
