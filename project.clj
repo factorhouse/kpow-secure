@@ -10,8 +10,9 @@
                  [org.clojure/tools.logging "1.2.4"]
                  [ch.qos.logback/logback-classic "1.2.10"]]
 
-  :profiles {:dev     {:plugins      [[lein-cljfmt "0.8.0"]]
-                       :dependencies [[clj-kondo "2022.01.15"]]}
+  :profiles {:dev     {:plugins        [[lein-cljfmt "0.8.0"]]
+                       :dependencies   [[clj-kondo "2022.01.15"]]
+                       :resource-paths ["dev-resources"]}
              :uberjar {:aot :all}}
 
   :aliases {"smoke" ["do"

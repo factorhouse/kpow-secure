@@ -73,27 +73,36 @@
         (.get buffer cypher-bytes)
         (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
+(defn encrypt-file
+  [key-file in-file out-file]
+  (->> (slurp in-file)
+       (encoded-payload (key/import-key (str/trim (slurp key-file))))
+       (spit out-file))
+  (log/infof "\nencrypted: %s > %s" in-file out-file))
+
+(defn decrypt-file
+  [key-file in-file out-file]
+  (->> (slurp in-file)
+       (decoded-payload (key/import-key (str/trim (slurp key-file))))
+       (spit out-file))
+  (log/infof "\ndecrypted: %s > %s" in-file out-file))
+
 (def cli-options
-  [["-e" "--encrypt TEXT-FILE" "Encrypt plain text file"]
-   ["-d" "--decrypt PAYLOAD-FILE" "Decrypt payload file"]
-   ["-p" "--keyfile KEY-FILE" "(required) File containing base64 encryption key"]
+  [["-e" "--encrypt FILE" "File to encrypt"]
+   ["-d" "--decrypt FILE" "File to decrypt"]
+   ["-p" "--key-file KEY-FILE" "(required) File containing base64 encryption key"]
+   ["-o" "--out-file OUT-FILE" "(optional) File for encrypted/decrypted output, default: [FILE].(enc|dec)"]
    ["-h" "--help"]])
 
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)
-        {:keys [encrypt decrypt keyfile help]} options]
+        {:keys [encrypt decrypt key-file out-file help]} options]
     (try
       (cond
-        errors (log/info (str "\n\n" errors))
-        (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
-        (and (or encrypt decrypt) (not keyfile)) (log/info "\n\n  required: --keyfile KEY-FILE  File containing base64 encryption key")
-        encrypt (do (->> (slurp encrypt)
-                         (encoded-payload (key/import-key (str/trim (slurp keyfile))))
-                         (spit (str encrypt ".payload")))
-                    (log/infof "\n\nPlain text encrypted: %s > %s" encrypt (str encrypt ".payload")))
-        decrypt (do (->> (slurp decrypt)
-                         (decoded-payload (key/import-key (str/trim (slurp keyfile))))
-                         (spit (str decrypt ".plain")))
-                    (log/infof "\n\nPayload decrypted: %s > %s" decrypt (str decrypt ".plain"))))
+        errors (log/error errors)
+        (or help (not (or encrypt decrypt))) (log/info (str "\n" summary))
+        (and (or encrypt decrypt) (not key-file)) (log/info "\nrequired: --keyfile KEY-FILE  File containing base64 encryption key")
+        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".enc")))
+        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".dec"))))
       (catch Exception ex
-        (log/errorf ex "\n\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
+        (log/errorf ex "\nfailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
