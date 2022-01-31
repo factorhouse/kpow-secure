@@ -226,7 +226,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
   -e, --encrypt FILE       File to encrypt
   -d, --decrypt FILE       File to decrypt
   -p, --key-file KEY-FILE  (required) File containing base64 encryption key
-  -o, --out-file OUT-FILE  (optional) File for encrypted/decrypted output, default: [FILE].(enc|dec)
+  -o, --out-file OUT-FILE  (optional) File for encrypted/decrypted output, default: [FILE].(aes|plain)
   -h, --help
 ```
 
@@ -267,7 +267,7 @@ Decrypted: dev-resources/secure/config.env.aes > dev-resources/secure/config.env
 * Confirm the decrypted plain-text
 
 ```bash
-cat secure/config.env.payload.plain
+cat dev-resources/secure/config.env.aes.plain
 ```
 
 ```bash
@@ -287,7 +287,7 @@ We provide a basic Decoder API in Java to allow encrypted payloads to be decoded
 * Decode payload text with a serialized key
 
 ```Java
-Properties myProps = Decoder.properties("key-text", "payload-text");
+Properties myProps = Decoder.properties("base64-key-text", "payload-text");
 ```
 
 * Decode payload file with a serialized key file

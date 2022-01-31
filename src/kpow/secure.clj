@@ -109,7 +109,7 @@
   [["-e" "--encrypt FILE" "File to encrypt"]
    ["-d" "--decrypt FILE" "File to decrypt"]
    ["-p" "--key-file KEY-FILE" "(required) File containing base64 encryption key"]
-   ["-o" "--out-file OUT-FILE" "(optional) File for encrypted/decrypted output, default: [FILE].(enc|dec)"]
+   ["-o" "--out-file OUT-FILE" "(optional) File for encrypted/decrypted output, default: [FILE].(aes|plain)"]
    ["-h" "--help"]])
 
 (defn -main [& args]
@@ -120,7 +120,7 @@
         errors (log/error (str "\n\n" errors))
         (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
         (and (or encrypt decrypt) (not key-file)) (log/info "\n\nRequired: --keyfile KEY-FILE  File containing base64 encryption key")
-        encrypt (encrypt key-file encrypt (or out-file (str encrypt ".aes")))
-        decrypt (decrypt key-file decrypt (or out-file (str decrypt ".plain"))))
+        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".aes")))
+        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".plain"))))
       (catch Exception ex
         (log/errorf ex "\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
