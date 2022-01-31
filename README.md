@@ -13,6 +13,7 @@ The chosen algorithms are suited to low-volume encryption of local files.
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2WithHmacSHA256
  * AES/CBC/PKCS5Padding cipher-text with random IV encryption / decryption
  * Base64 key serialization / deserialization of keys for import / export
+ * Payload interpretation (Clojure Map or Java Properties)
  * CLI interface for key generation and encryption
 
 ## Key Generation
@@ -37,6 +38,9 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ```clojure
 (key/export-key (key/secret-key "aquickredfox" "asalt"))
+```
+
+```clojure
 => "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok="
 ```
 
@@ -44,6 +48,9 @@ The chosen algorithms are suited to low-volume encryption of local files.
 
 ```clojure
 (key/import-key "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok=")
+```
+
+```clojure
 => #object[javax.crypto.spec.SecretKeySpec 0x3d2b5928 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
 ```
 
@@ -56,6 +63,9 @@ The chosen algorithms are suited to low-volume encryption of local files.
  (key/secret-key "aquickredfox" "some-salt")
  (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
       "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
+```
+
+```clojure
 => "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
 ```
 
@@ -67,7 +77,42 @@ The chosen algorithms are suited to low-volume encryption of local files.
 (secure/decoded-payload
  (key/secret-key "aquickredfox" "some-salt")
  "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=")
+```
+
+```clojure
 => "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
+```
+
+## Payload Interpretation
+
+* Transform Java Properties encoded payload text into a Clojure Map or Java Properties
+
+```clojure
+(-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/config.env.aes")
+    (secure/->map))
+```
+
+```
+{"SASL_JAAS_CONFIG"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
+ "SASL_MECHANISM"          "PLAIN"
+ "SECURITY_PROTOCOL"       "SASL_PLAINTEXT"
+ "SSL_TRUSTSTORE_LOCATION" "/ssl/truststore.jks"
+ "SSL_TRUSTSTORE_PASSWORD" "password1234"}
+```        
+
+* See the dev-resources/secure/props.env.aes payload for an example of the flexibility of Java Properties encoding
+
+```clojure
+(-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")
+    (secure/->map))
+```
+
+```clojure
+{"sasl.jaas.config"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
+ "sasl.mechanism"          "PLAIN"
+ "security.protocol"       "SASL_PLAINTEXT"
+ "ssl.truststore.location" "/ssl/truststore.jks"
+ "ssl.truststore.password" "1234"}
 ```
 
 ## Command Line Interface
