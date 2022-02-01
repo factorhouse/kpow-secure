@@ -12,6 +12,15 @@
   (let [secret-key (key/secret-key "aquickredfox" "some-salt")]
 
     (is (= sample-input
+           (secure/decrypt
+            "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
+            "ARDuFSOqVc5l8dPe2l8jLnRvf2Y2/ZnhWNtkuZuoP1Updxo4cFAsFr+eM4WVcH/yIogK3ypO4sLp7sSXjkXv3L5Ci/5poJG2U/+No5ySBR1BhDjcV3mkO3TBYp4nQu65mpA=")))
+
+    (is (= sample-input
+           (->> (secure/encrypt "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=" sample-input)
+                (secure/decrypt "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="))))
+
+    (is (= sample-input
            (->> (secure/encoded-payload secret-key sample-input)
                 (secure/decoded-payload secret-key))))
 
@@ -71,4 +80,9 @@
               "security.protocol"       "SASL_PLAINTEXT"
               "ssl.truststore.location" "/ssl/truststore.jks"
               "ssl.truststore.password" "1234"}
-             (into {} (Decoder/loadProperties "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")))))))
+             (into {} (Decoder/loadProperties "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes"))))
+
+      (is (= sample-input
+             (Decoder/text
+              "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
+              "ARDuFSOqVc5l8dPe2l8jLnRvf2Y2/ZnhWNtkuZuoP1Updxo4cFAsFr+eM4WVcH/yIogK3ypO4sLp7sSXjkXv3L5Ci/5poJG2U/+No5ySBR1BhDjcV3mkO3TBYp4nQu65mpA="))))))

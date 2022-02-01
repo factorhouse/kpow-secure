@@ -7,6 +7,12 @@ import java.util.Properties;
 
 public class Decoder {
 
+    public static String text(String key, String payload) {
+        IFn require = Clojure.var("clojure.core", "require");
+        require.invoke(Clojure.read("kpow.secure"));
+        return (String) Clojure.var("kpow.secure", "decrypt").invoke(key, payload);
+    }
+
     public static Properties properties(String key, String payload) {
         IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read("kpow.secure"));
