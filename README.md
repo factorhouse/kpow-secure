@@ -219,19 +219,22 @@ This key can be regenerated with the same passphrase and salt.
 
 ## Payload Encryption
 
-* Show the help menu
+#### Show the help menu
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
 ```
 
 ```bash
-19:49:12.446 [main] INFO kpow.secure -
+23:01:46.551 [main] INFO kpow.secure -
 
-  -e, --encrypt FILE       File to encrypt
-  -d, --decrypt FILE       File to decrypt
-  -p, --key-file KEY-FILE  (required) File containing base64 encryption key
-  -o, --out-file OUT-FILE  (optional) File for encrypted/decrypted output, default: [FILE].(aes|plain)
+      --key TEXT           Base64 encoded key
+      --key-file FILE      File containing base64 encoded key
+      --encrypt TEXT       Text to encrypt
+      --decrypt TEXT       Base64 encoded payload text
+      --encrypt-file FILE  File containing text to encrypt
+      --decrypt-file FILE  File containing base64 encoded payload text
+      --out-file FILE      (optional) File for encrypted/decrypted output
   -h, --help
 ```
 
