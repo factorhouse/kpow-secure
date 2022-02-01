@@ -107,7 +107,7 @@
     (try
       (slurp file)
       (catch Exception ex
-        (throw (ex-info (str "File not found: %s" file) {} ex))))))
+        (throw (ex-info (format "File not found: %s" file) {} ex))))))
 
 (defn text-file
   [text file encrypt?]
@@ -115,7 +115,7 @@
     (spit file text)
     (log/info "\n\nKpow %s:\n---------------\n\n> %s" (if encrypt? "Encrypted" "Decrypted") file)
     (catch Exception ex
-      (throw (ex-info (str "Could not write to: %s" file) {} ex)))))
+      (throw (ex-info (format "Could not write to: %s" file) {} ex)))))
 
 (defn log-text
   [text encrypt?]
