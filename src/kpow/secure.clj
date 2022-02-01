@@ -113,13 +113,13 @@
   [text file encrypt?]
   (try
     (spit file text)
-    (log/info "\n\nKpow %s:\n---------------\n\n> %s" (if encrypt? "Encrypted" "Decrypted") file)
+    (log/infof "\n\nKpow %s:\n---------------\n\n> %s" (if encrypt? "Encrypted" "Decrypted") file)
     (catch Exception ex
       (throw (ex-info (format "Could not write to: %s" file) {} ex)))))
 
 (defn log-text
   [text encrypt?]
-  (log/info "\n\nKpow %s:\n---------------\n\n%s" (if encrypt? "Encrypted" "Decrypted") text))
+  (log/infof "\n\nKpow %s:\n---------------\n\n%s" (if encrypt? "Encrypted" "Decrypted") text))
 
 (defn process
   [encrypt? key-text target-text out-file]
