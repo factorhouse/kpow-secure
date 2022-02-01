@@ -2,9 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
-Simple secure config with standard Java AES encryption and PBKDF master key generation.
+Simple secure configuration with standard Java AES encryption and PBKDF master key generation.
 
-This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
+This library can be used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
 
