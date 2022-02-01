@@ -20,7 +20,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ## Key Generation
 
-### Generate a key with a random salt (not reproducible from inputs)
+#### Generate a key with a random salt (not reproducible from inputs)
 
 ```clojure
 (key/secret-key "aquickredfox")
