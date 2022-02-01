@@ -121,6 +121,13 @@
   [text encrypt?]
   (log/info "\n\nKpow %s:\n---------------\n\n%s" (if encrypt? "Encrypted" "Decrypted") text))
 
+(defn process
+  [encrypt? key-text target-text out-file]
+  (let [text     (if encrypt? (encrypted key-text target-text) (decrypted key-text target-text))]
+    (if out-file
+      (text-file text out-file encrypt?)
+      (log-text text encrypt?))))
+
 (defn ->props
   [text]
   (let [props (Properties.)]
@@ -153,10 +160,6 @@
           (or help (empty? options)) (log/info (str "\n\n" summary))
           (str/blank? key-text) (log/info "\n\nRequired: --key, or --key-file")
           (str/blank? target-text) (log/info "\n\nRequired --encrypt, --decrypt, --encrypt-file, or --decrypt-file")
-          :else (let [encrypt? (or encrypt encrypt-file)
-                      text     (if encrypt? (encrypted key-text target-text) (decrypted key-text target-text))]
-                  (if out-file
-                    (text-file text out-file encrypt?)
-                    (log-text text encrypt?)))))
+          :else (process (or encrypt encrypt-file) key-text target-text out-file)))
       (catch Exception ex
         (log/error ex)))))
