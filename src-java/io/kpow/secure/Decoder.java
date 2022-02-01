@@ -7,23 +7,41 @@ import java.util.Properties;
 
 public class Decoder {
 
+    /**
+     * Decode payload > text with key taken from environment variable KPOW_SECURE_KEY
+     **/
+    public static String text(String payload) {
+        IFn require = Clojure.var("clojure.core", "require");
+        require.invoke(Clojure.read("kpow.secure"));
+        return (String) Clojure.var("kpow.secure", "decrypted").invoke(payload);
+    }
+
+    /**
+     * Decode payload > text with key provided
+     **/
     public static String text(String key, String payload) {
         IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read("kpow.secure"));
-        return (String) Clojure.var("kpow.secure", "decrypt").invoke(key, payload);
+        return (String) Clojure.var("kpow.secure", "decrypted").invoke(key, payload);
     }
 
-    public static Properties properties(String key, String payload) {
+    /**
+     * Decode payload > properties with key taken from environment variable KPOW_SECURE_KEY
+     **/
+    public static Properties properties(String payload) {
         IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read("kpow.secure"));
-        String text = (String) Clojure.var("kpow.secure", "decrypt").invoke(key, payload);
+        String text = (String) Clojure.var("kpow.secure", "decrypted").invoke(payload);
         return (Properties) Clojure.var("kpow.secure", "->props").invoke(text);
     }
 
-    public static Properties loadProperties(String keyPath, String payloadPath) {
+    /**
+     * Decode payload > properties with key provided
+     **/
+    public static Properties properties(String key, String payload) {
         IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read("kpow.secure"));
-        String text = (String)  Clojure.var("kpow.secure", "decrypt-file").invoke(keyPath, payloadPath);
+        String text = (String) Clojure.var("kpow.secure", "decrypted").invoke(key, payload);
         return (Properties) Clojure.var("kpow.secure", "->props").invoke(text);
     }
 

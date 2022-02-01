@@ -1,5 +1,6 @@
 (ns kpow.secure
-  (:require [clojure.tools.cli :as cli]
+  (:require [clojure.string :as str]
+            [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log]
             [kpow.secure.key :as key])
   (:import (java.io StringReader)
@@ -10,6 +11,8 @@
            (javax.crypto.spec IvParameterSpec)
            (java.util Base64 Properties))
   (:gen-class))
+
+(def kpow-secure-key "KPOW_SECURE_KEY")
 
 ;; scheme version static as v1 for now and encoded into the message as first byte
 (def scheme-v1 (unchecked-byte 1))
@@ -55,7 +58,7 @@
     (.put buffer ^"[B" payload-bytes)
     (String. (.encode (Base64/getEncoder) (.array buffer)) StandardCharsets/UTF_8)))
 
-(defn decoded-payload
+(defn decoded-text
   "Validate the payload parts, then produce plain-text original of input cipher-text"
   [^SecretKey secret-key ^String encoded-payload]
   (let [buffer          (->> (.getBytes encoded-payload StandardCharsets/UTF_8)
@@ -64,36 +67,59 @@
         message-version (unchecked-int (.get buffer))
         iv-length       (unchecked-int (.get buffer))]
     (when-not (= 1 message-version)
-      (throw (IllegalArgumentException. (format "invalid scheme version: %s" message-version))))
+      (throw (IllegalArgumentException. (format "Invalid scheme version: %s" message-version))))
     (when-not (= 16 iv-length)
-      (throw (IllegalArgumentException. (format "invalid initialization vector size: %s" iv-length))))
+      (throw (IllegalArgumentException. (format "Invalid initialization vector size: %s" iv-length))))
     (let [iv-bytes (byte-array iv-length)]
       (.get buffer iv-bytes)
       (let [cypher-bytes (byte-array (.remaining buffer))]
         (.get buffer cypher-bytes)
         (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
-(defn encrypt
-  [key-text plain-text]
-  (encoded-payload (key/import-key key-text) plain-text))
+(defn env-key
+  "Retrieve an encoded encryption key from the kpow-secure-key environment variable"
+  []
+  (System/getenv kpow-secure-key))
 
-(defn encrypt-file
-  ([key-file in-file]
-   (encrypt (slurp key-file) (slurp in-file)))
-  ([key-file in-file out-file]
-   (spit out-file (encrypt-file key-file in-file))
-   (log/infof "\n\nEncrypted: %s > %s" in-file out-file)))
+(defn encrypted
+  ([plain-text]
+   (encrypted (env-key) plain-text))
+  ([key-text plain-text]
+   (when (str/blank? key-text)
+     (throw (IllegalArgumentException. "No key provided")))
+   (when (nil? plain-text)
+     (throw (IllegalArgumentException. "No key provided")))
+   (encoded-payload (key/import-key key-text) plain-text)))
 
-(defn decrypt
-  [key-text encoded-payload]
-  (decoded-payload (key/import-key key-text) encoded-payload))
+(defn decrypted
+  ([payload-text]
+   (decrypted (env-key) payload-text))
+  ([key-text payload-text]
+   (when (str/blank? key-text)
+     (throw (IllegalArgumentException. "No key provided")))
+   (when (str/blank? payload-text)
+     (throw (IllegalArgumentException. "No payload provided")))
+   (decoded-text (key/import-key key-text) payload-text)))
 
-(defn decrypt-file
-  ([key-file in-file]
-   (decrypt (slurp key-file) (slurp in-file)))
-  ([key-file in-file out-file]
-   (spit out-file (decrypt-file key-file in-file))
-   (log/infof "\n\nDecrypted: %s > %s" in-file out-file)))
+(defn file-text
+  [file]
+  (when file
+    (try
+      (slurp file)
+      (catch Exception ex
+        (throw (ex-info (str "File not found: %s" file) {} ex))))))
+
+(defn text-file
+  [text file encrypt?]
+  (try
+    (spit file text)
+    (log/info "\n\nKpow %s:\n---------------\n\n> %s" (if encrypt? "Encrypted" "Decrypted") file)
+    (catch Exception ex
+      (throw (ex-info (str "Could not write to: %s" file) {} ex)))))
+
+(defn log-text
+  [text encrypt?]
+  (log/info "\n\nKpow %s:\n---------------\n\n%s" (if encrypt? "Encrypted" "Decrypted") text))
 
 (defn ->props
   [text]
@@ -106,21 +132,31 @@
   (into {} (->props text)))
 
 (def cli-options
-  [["-e" "--encrypt FILE" "File to encrypt"]
-   ["-d" "--decrypt FILE" "File to decrypt"]
-   ["-p" "--key-file KEY-FILE" "(required) File containing base64 encryption key"]
-   ["-o" "--out-file OUT-FILE" "(optional) File for encrypted/decrypted output, default: [FILE].(aes|plain)"]
+  [[nil "--key TEXT" "Base64 encoded key"]
+   [nil "--key-file FILE" "File containing base64 encoded key"]
+   [nil "--encrypt TEXT" "Text to encrypt"]
+   [nil "--decrypt TEXT" "Base64 encoded payload text"]
+   [nil "--encrypt-file FILE" "File containing text to encrypt"]
+   [nil "--decrypt-file FILE" "File containing base64 encoded payload text"]
+   [nil "--out-file FILE" "(optional) File for encrypted/decrypted output"]
    ["-h" "--help"]])
 
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)
-        {:keys [encrypt decrypt key-file out-file help]} options]
+        {:keys [key key-file encrypt decrypt encrypt-file decrypt-file out-file help]} options]
     (try
-      (cond
-        errors (log/error (str "\n\n" errors))
-        (or help (not (or encrypt decrypt))) (log/info (str "\n\n" summary))
-        (and (or encrypt decrypt) (not key-file)) (log/info "\n\nRequired: --keyfile KEY-FILE  File containing base64 encryption key")
-        encrypt (encrypt-file key-file encrypt (or out-file (str encrypt ".aes")))
-        decrypt (decrypt-file key-file decrypt (or out-file (str decrypt ".plain"))))
+      (let [key-text    (or key (file-text key-file))
+            target-file (or encrypt-file decrypt-file)
+            target-text (or encrypt decrypt (file-text target-file))]
+        (cond
+          errors (log/error (str "\n\n" errors))
+          (or help (empty? options)) (log/info (str "\n\n" summary))
+          (str/blank? key-text) (log/info "\n\nRequired: --key, or --key-file")
+          (str/blank? target-text) (log/info "\n\nRequired --encrypt, --decrypt, --encrypt-file, or --decrypt-file")
+          :else (let [encrypt? (or encrypt encrypt-file)
+                      text     (if encrypt? (encrypted key-text target-text) (decrypted key-text target-text))]
+                  (if out-file
+                    (text-file text out-file encrypt?)
+                    (log-text text encrypt?)))))
       (catch Exception ex
-        (log/errorf ex "\nFailed to %s %s" (if encrypt "encrypt" "decrypt") (or encrypt decrypt))))))
+        (log/error ex)))))
