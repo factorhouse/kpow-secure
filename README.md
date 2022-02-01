@@ -2,20 +2,21 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
+Simple secure config with standard Java AES encryption and PBKDF master key generation.
+
 This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
-
-The chosen algorithms are suited to low-volume encryption of local files.
 
 ## Capabilities
 
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2WithHmacSHA256
  * AES/CBC/PKCS5Padding cipher-text with random IV encryption / decryption
  * Base64 key serialization / deserialization of keys for import / export
- * Payload interpretation (Clojure Map or Java Properties)
- * CLI interface for key generation and encryption
- * Java API for secret decryption / interop
+ * Base64 payload encoding of scheme version, IV length, IV, and cipher text
+ * Payload interpretation (decrypt config into `java.util.Properties` or `clojure.lang.PersistentArrayMap`)
+ * CLI interface for key generation and encryption / decryption
+ * Java API for easy decryption of config into `java.util.Properties`
 
 ## Key Generation
 
