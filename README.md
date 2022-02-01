@@ -8,7 +8,7 @@ This library can be used to secure configuration for [kPow for Apache Kafka](htt
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
 
-### Capabilities
+## Capabilities
 
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2WithHmacSHA256
  * AES/CBC/PKCS5Padding cipher-text with random IV encryption / decryption
@@ -30,7 +30,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => #object[javax.crypto.spec.SecretKeySpec 0x9a9f63e "javax.crypto.spec.SecretKeySpec@15b1a"]
 ```
 
-* Generate a key with a chosen salt (reproducible from inputs)
+#### Generate a key with a chosen salt (reproducible from inputs)
 
 ```clojure
 (key/secret-key "aquickredfox" "asalt")
@@ -42,7 +42,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ## Key Serialization
 
-* Serialize a key to Base64 text
+#### Serialize a key to base64 text
 
 ```clojure
 (key/export-key (key/secret-key "aquickredfox" "asalt"))
@@ -52,7 +52,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok="
 ```
 
-* Produce a key from Base64 text
+#### Produce a key from base64 text
 
 ```clojure
 (key/import-key "Ic9cChI5tatKL1pzbQqVzJ0Tv0DsiEa7ES/CW1IVgok=")
@@ -62,12 +62,12 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => #object[javax.crypto.spec.SecretKeySpec 0x3d2b5928 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
 ```
 
-## Payload Encryption
+## Encryption
 
-* Encrypted payload from serialized key and plain text
+#### Encrypted payload from base64 encoded key and plain text
 
 ```clojure
-(secure/encrypt
+(secure/encrypted
  "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
  (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
       "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
@@ -77,7 +77,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
 ```
 
-* Encrypted payload from SecretKey and plain text
+#### Encrypted payload from SecretKey and plain text
 
 ```clojure
 (secure/encoded-payload
@@ -92,10 +92,10 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ## Payload Decryption
 
-* Plain text from serialized key and encrypted payload
+#### Plain text from serialized key and encrypted payload
 
 ```clojure
-(secure/decrypt
+(secure/decrypted
  "//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88="
  "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=")
 ```
@@ -104,10 +104,10 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
 ```
 
-* Plain text from SecretKey and encrypted payload
+#### Plain text from SecretKey and encrypted payload
 
 ```clojure
-(secure/decoded-payload
+(secure/decoded-text
  (key/secret-key "aquickredfox" "some-salt")
  "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=")
 ```
@@ -118,10 +118,14 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ## Payload Interpretation
 
-* Transform Java Properties encoded payload text into a Clojure Map or Java Properties
+Kpow-Secure will interpret payloads where the plain-text is in `java.util.Properties` format.
+
+See [dev-resources/secure/props.env](dev-resources/secure/props.env) for an example of the flexibility of Java Properties encoding.
+
+#### Interpret payload as clojure.lang.PersistentArrayMap
 
 ```clojure
-(-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/config.env.aes")
+(-> (secure/decrypted (slurp "dev-resources/secure/passphrase.key") (slurp "dev-resources/secure/config.env.aes"))
     (secure/->map))
 ```
 
@@ -132,13 +136,13 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
  "SECURITY_PROTOCOL"       "SASL_PLAINTEXT"
  "SSL_TRUSTSTORE_LOCATION" "/ssl/truststore.jks"
  "SSL_TRUSTSTORE_PASSWORD" "password1234"}
-```        
+```
 
-* See [dev-resources/secure/props.env](dev-resources/secure/props.env) for an example of the flexibility of Java Properties encoding
+#### Interpret payload as java.util.Properties
 
 ```clojure
-(-> (secure/decrypt-file "dev-resources/secure/passphrase.key" "dev-resources/secure/props.env.aes")
-    (secure/->map))
+(-> (secure/decrypted (slurp "dev-resources/secure/passphrase.key") (slurp "dev-resources/secure/props.env.aes"))
+    (secure/->props))
 ```
 
 ```clojure
