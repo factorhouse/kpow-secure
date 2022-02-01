@@ -2,20 +2,21 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
-This library is used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
+Simple secure configuration with standard Java AES encryption and PBKDF2 master key generation.
+
+This library can be used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
-
-The chosen algorithms are suited to low-volume encryption of local files.
 
 ## Capabilities
 
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2WithHmacSHA256
  * AES/CBC/PKCS5Padding cipher-text with random IV encryption / decryption
  * Base64 key serialization / deserialization of keys for import / export
- * Payload interpretation (Clojure Map or Java Properties)
- * CLI interface for key generation and encryption
- * Java API for secret decryption / interop
+ * Base64 payload encoding of scheme version, IV length, IV, and cipher text
+ * Payload interpretation (decrypt config into `java.util.Properties` or `clojure.lang.PersistentArrayMap`)
+ * CLI interface for key generation and encryption / decryption
+ * Java API for easy decryption of config into `java.util.Properties`
 
 ## Key Generation
 
@@ -284,15 +285,31 @@ Kpow Secure is implemented in our langauge of choice, Clojure.
 
 We provide a basic Decoder API in Java to allow encrypted payloads to be decoded to `java.util.Properties`
 
-* Decode payload text with a serialized key
-
-```Java
-Properties myProps = Decoder.properties("base64-key-text", "payload-text");
-```
-
 * Decode payload file with a serialized key file
 
 ```Java
 Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/config.env.aes");
 ```
 
+```clojure
+;; Java API returns this as a java.util.Properties object
+=> 
+{"sasl.jaas.config"        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"kpow\" password=\"kpow-secret\";"
+ "sasl.mechanism"          "PLAIN"
+ "security.protocol"       "SASL_PLAINTEXT"
+ "ssl.truststore.location" "/ssl/truststore.jks"
+ "ssl.truststore.password" "1234"}
+``` 
+
+* Decode payload text with a serialized key
+
+```Java
+Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
+```
+
+```clojure
+;; Java API returns this as a java.util.Properties object
+=> 
+{"SSL_TRUSTSTORE_PASSWORD" "trustpass1234"
+ "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
+``` 
