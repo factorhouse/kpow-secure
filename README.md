@@ -156,15 +156,15 @@ See [dev-resources/secure/props.env](dev-resources/secure/props.env) for an exam
 
 ## Command Line Interface
 
-This library exposes both key generation and payload encryption functions via a CLI.
+This library exposes key generation and payload encryption / decryption functions via a CLI.
 
-You can uberjar this project, or include the library within your own project and uberjar it.
+You can uberjar this project, or include the library within your own project and uberjar that.
 
 ### Key Generation
 
-The passphrase and key are read from a local files to ensure they are not observable in your shell history.
+The passphrase is read from a local file to ensure it is not observable in your shell history.
 
-* Show the help menu
+#### Show the help menu
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
@@ -179,7 +179,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
   -h, --help
 ```
 
-* Generate a key with random salt (output written to stdout and default key file)
+#### Generate a key with random salt
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt
@@ -198,7 +198,7 @@ Key file written to: dev-resources/secure/passphrase.txt.key
 Random salt used, this key cannot be regenerated.
 ```
 
-* Generate a key with chosen salt (output written to stdout and specific key file)
+#### Generate a key with chosen salt
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt --salt abcdef --out-file dev-resources/secure/mykey.aes
