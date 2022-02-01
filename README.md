@@ -8,7 +8,7 @@ This library can be used to secure configuration for [kPow for Apache Kafka](htt
 
 See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
 
-## Capabilities
+### Capabilities
 
  * 256-bit AES encryption key generation from a passphrase and salt using PBKDF2WithHmacSHA256
  * AES/CBC/PKCS5Padding cipher-text with random IV encryption / decryption
@@ -20,7 +20,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ## Key Generation
 
-* Generate a key with a random salt (not reproducible from inputs)
+### Generate a key with a random salt (not reproducible from inputs)
 
 ```clojure
 (key/secret-key "aquickredfox")
