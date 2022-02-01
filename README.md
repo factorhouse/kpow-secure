@@ -283,9 +283,9 @@ SSL_TRUSTSTORE_PASSWORD=password1234
 
 Kpow Secure is implemented in our langauge of choice, Clojure.
 
-We provide a basic Decoder API in Java to allow encrypted payloads to be decoded to `java.util.Properties`
+We provide a basic Decoder API in Java to allow encrypted payloads to be decoded to `java.lang.String` or `java.util.Properties`
 
-* Decode payload text to plain string
+* Decode payload text to `java.lang.String`
 
 ```java
 String plainText = Decoder.text("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
@@ -296,7 +296,7 @@ String plainText = Decoder.text("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", 
 SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234
 ```
 
-* Decode payload file with a serialized key file as java.util.Properties
+* Decode payload file with a serialized key file to `java.util.Properties`
 
 ```java
 Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/config.env.aes");
@@ -312,7 +312,7 @@ Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/confi
  "ssl.truststore.password" "1234"}
 ``` 
 
-* Decode payload text with a serialized key as java.util.Properties
+* Decode payload text with a serialized key to `java.util.Properties`
 
 ```java
 Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
