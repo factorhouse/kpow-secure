@@ -22,7 +22,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
  * Base64 payload encoding of scheme version, IV length, IV, and cipher text
  * Payload interpretation (decrypt config into `java.util.Properties` or `clojure.lang.PersistentArrayMap`)
  * CLI interface for key generation and encryption / decryption
- * Java API for easy decryption of config into `java.util.Properties`
+ * Java API for easy decryption of payload into `java.util.String` or `java.util.Properties`
 
 ## Clojure Implementation
 
