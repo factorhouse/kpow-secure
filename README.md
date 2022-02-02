@@ -72,7 +72,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ### Encryption
 
-#### Encrypted payload from base64 encoded key and plain text
+#### Encrypted payload from base64 encoded key and plaintext
 
 ```clojure
 (secure/encrypted
@@ -85,7 +85,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
 ```
 
-#### Encrypted payload from SecretKey and plain text
+#### Encrypted payload from SecretKey and plaintext
 
 ```clojure
 (secure/encoded-payload
@@ -100,7 +100,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ### Decryption
 
-#### Plain text from serialized key and encrypted payload
+#### Plaintext from serialized key and encrypted payload
 
 ```clojure
 (secure/decrypted
@@ -112,7 +112,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
 ```
 
-#### Plain text from SecretKey and encrypted payload
+#### Plaintext from SecretKey and encrypted payload
 
 ```clojure
 (secure/decoded-text
@@ -179,7 +179,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 ```
 
 ```bash
-19:45:46.477 [main] INFO kpow.secure.key -
+21:27:09.090 [main] INFO kpow.secure.key -
 
   -p, --pass-file PASSPHRASE-FILE  (required) File containing key passphrase
   -s, --salt SALT                  (optional) Salt to use with key generation, random if none provided
@@ -246,7 +246,20 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
   -h, --help
 ```
 
-#### Encrypt a plain-text file
+
+#### Encrypt a plaintext file
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
+```
+
+```bash
+19:56:34.117 [main] INFO kpow.secure -
+
+Encrypted: dev-resources/secure/config.env > dev-resources/secure/config.env.aes
+```
+
+#### Encrypt a plaintext file
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
@@ -282,7 +295,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt dev-resou
 Decrypted: dev-resources/secure/config.env.aes > dev-resources/secure/config.env.aes.plain
 ```
 
-#### View the decrypted plain text
+#### View the decrypted plaintext
 
 ```bash
 cat dev-resources/secure/config.env.aes.plain
