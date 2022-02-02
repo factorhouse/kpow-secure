@@ -279,13 +279,16 @@ supersecrettext
 #### Encrypt a plaintext file
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt-file dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt-file dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.key --out-file dev-resources/secure/config.aes
 ```
 
 ```bash
-19:56:34.117 [main] INFO kpow.secure -
+22:33:28.807 [main] INFO kpow.secure -
 
-Encrypted: dev-resources/secure/config.env > dev-resources/secure/config.env.aes
+Kpow Encrypted:
+---------------
+
+> dev-resources/secure/config.aes
 ```
 
 #### View the encrypted payload
