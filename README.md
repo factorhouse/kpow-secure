@@ -6,7 +6,7 @@ A library for simple, secure configuration with standard Java AES encryption and
 
 Can be used standalone or integrated with your application. This library provides:
 
-* Clojure implementation.
+* Clojure implementation ([link](https://github.com/operatr-io/kpow-secure/blob/main/README.md#clojure-implementation)).
 * CLI interface.
 * Java API (decoding/decryption only).
 
@@ -24,7 +24,9 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
  * CLI interface for key generation and encryption / decryption
  * Java API for easy decryption of config into `java.util.Properties`
 
-## Key Generation
+## Clojure Implementation
+
+### Key Generation
 
 #### Generate a key with a random salt (not reproducible from inputs)
 
