@@ -4,13 +4,11 @@
 
 A library for simple, secure configuration with standard Java AES encryption and PBKDF2 master key generation. 
 
-Can be used standalone or integrated with your application. containing Clojure implementation, Java API, and CLI.
-
-Contains:
+Can be used standalone or integrated with your application. This library provides:
 
 * Clojure implementation.
 * CLI interface.
-* Java API.
+* Java API (decoding/decryption only).
 
 This library can be used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
