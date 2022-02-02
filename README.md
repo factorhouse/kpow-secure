@@ -6,9 +6,9 @@ A library for simple, secure configuration with standard Java AES encryption and
 
 Can be used standalone or integrated with your application. This library provides:
 
-* Clojure implementation. ([link](https://github.com/operatr-io/kpow-secure/blob/main/README.md#clojure-implementation))
-* CLI interface. ([link](https://github.com/operatr-io/kpow-secure/blob/main/README.md#cli-interface)).
-* Java API. ([link](https://github.com/operatr-io/kpow-secure/blob/main/README.md#java-api)).
+* Clojure implementation. ([guide](https://github.com/operatr-io/kpow-secure/blob/main/README.md#clojure-implementation))
+* Command line interface. interface. ([guide](https://github.com/operatr-io/kpow-secure/blob/main/README.md#command-line-interface))
+* Java API. ([guide](https://github.com/operatr-io/kpow-secure/blob/main/README.md#java-api))
 
 This library can be used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
