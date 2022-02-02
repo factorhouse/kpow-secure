@@ -246,23 +246,40 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
   -h, --help
 ```
 
+#### Encrypt text directly on the command line 
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt supersecrettext --key 88wRMz4DuaRWOmyKPb8IgmY4kZAyQvPiRVxUy79OgL8=
+```
+
+```bash
+22:19:30.511 [main] INFO kpow.secure -
+
+Kpow Encrypted:
+---------------
+
+ARB41R5ZsMNkjNnr3YD+RK2wT6ywAgR0KpcCpLYH/g3rxQ==
+```
+
+#### Decrypt text directly on the command line 
+
+```bash
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt ARDO7O0legO6PFvIGq/ILD/gekC43knuHqCxhvJoyOeCBw== --key-file dev-resources/secure/passphrase.key
+```
+
+```bash
+22:21:16.491 [main] INFO kpow.secure -
+
+Kpow Decrypted:
+---------------
+
+supersecrettext
+```
 
 #### Encrypt a plaintext file
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
-```
-
-```bash
-19:56:34.117 [main] INFO kpow.secure -
-
-Encrypted: dev-resources/secure/config.env > dev-resources/secure/config.env.aes
-```
-
-#### Encrypt a plaintext file
-
-```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt-file dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
 ```
 
 ```bash
