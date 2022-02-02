@@ -126,7 +126,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 
 ### Interpretation
 
-Kpow-Secure will interpret payloads where the plain-text is in `java.util.Properties` format.
+Kpow-Secure will interpret payloads where the plaintext is in `java.util.Properties` format.
 
 See [dev-resources/secure/props.env](dev-resources/secure/props.env) for an example of the flexibility of Java Properties encoding.
 
