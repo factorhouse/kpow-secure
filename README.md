@@ -2,7 +2,15 @@
 
 [![CircleCI](https://circleci.com/gh/operatr-io/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/operatr-io/kpow-secure)
 
-A utility library containing Clojure implementation, Java API, and CLI for simple, secure configuration with standard Java AES encryption and PBKDF2 master key generation. Can be used standalone or integrated with your application.
+A library for simple, secure configuration with standard Java AES encryption and PBKDF2 master key generation. 
+
+Can be used standalone or integrated with your application. containing Clojure implementation, Java API, and CLI.
+
+Contains:
+
+* Clojure implementation.
+* CLI interface.
+* Java API.
 
 This library can be used to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
