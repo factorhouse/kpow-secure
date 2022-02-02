@@ -26,14 +26,14 @@
     (IvParameterSpec. bytes)))
 
 (defn cipher-bytes
-  "Produce cipher-text from key / iv / plain-text input"
-  [^SecretKey secret-key ^IvParameterSpec iv-spec ^String plain-text]
+  "Produce cipher-text from key / iv / plaintext input"
+  [^SecretKey secret-key ^IvParameterSpec iv-spec ^String plaintext]
   (let [cipher (Cipher/getInstance cipher-algorithm)]
     (.init cipher Cipher/ENCRYPT_MODE secret-key ^IvParameterSpec iv-spec)
-    (.doFinal cipher (.getBytes plain-text (.name StandardCharsets/UTF_8)))))
+    (.doFinal cipher (.getBytes plaintext (.name StandardCharsets/UTF_8)))))
 
-(defn plain-text
-  "Produce plain-text from key / iv / cipher-bytes input"
+(defn plaintext
+  "Produce plaintext from key / iv / cipher-bytes input"
   [^SecretKey secret-key ^IvParameterSpec iv-spec cipher-bytes]
   (let [cipher (Cipher/getInstance cipher-algorithm)]
     (.init cipher Cipher/DECRYPT_MODE secret-key ^IvParameterSpec iv-spec)
@@ -45,10 +45,10 @@
     * 1 byte initialization vector length (v1 scheme expects 16 bytes)
     * Initialization vector of size ^
     * Cipher text"
-  [^SecretKey secret-key ^String plain-text]
+  [^SecretKey secret-key ^String plaintext]
   (let [payload-iv           (random-iv)
         payload-iv-bytes     (.getIV ^IvParameterSpec payload-iv)
-        payload-bytes        (cipher-bytes secret-key payload-iv plain-text)
+        payload-bytes        (cipher-bytes secret-key payload-iv plaintext)
         payload-iv-length    (count payload-iv-bytes)
         payload-bytes-length (count payload-bytes)
         buffer               (ByteBuffer/allocate (+ 1 1 payload-iv-length payload-bytes-length))]
@@ -59,7 +59,7 @@
     (String. (.encode (Base64/getEncoder) (.array buffer)) StandardCharsets/UTF_8)))
 
 (defn decoded-text
-  "Validate the payload parts, then produce plain-text original of input cipher-text"
+  "Validate the payload parts, then produce plaintext original of input cipher-text"
   [^SecretKey secret-key ^String encoded-payload]
   (let [buffer          (->> (.getBytes encoded-payload StandardCharsets/UTF_8)
                              (.decode (Base64/getDecoder))
@@ -74,7 +74,7 @@
       (.get buffer iv-bytes)
       (let [cypher-bytes (byte-array (.remaining buffer))]
         (.get buffer cypher-bytes)
-        (plain-text secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
+        (plaintext secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
 (defn env-key
   "Retrieve an encoded encryption key from the kpow-secure-key environment variable"
@@ -82,14 +82,14 @@
   (System/getenv kpow-secure-key))
 
 (defn encrypted
-  ([plain-text]
-   (encrypted (env-key) plain-text))
-  ([key-text plain-text]
+  ([plaintext]
+   (encrypted (env-key) plaintext))
+  ([key-text plaintext]
    (when (str/blank? key-text)
      (throw (IllegalArgumentException. "No key provided")))
-   (when (nil? plain-text)
-     (throw (IllegalArgumentException. "No key provided")))
-   (encoded-payload (key/import-key key-text) plain-text)))
+   (when (nil? plaintext)
+     (throw (IllegalArgumentException. "No plaintext provided")))
+   (encoded-payload (key/import-key key-text) plaintext)))
 
 (defn decrypted
   ([payload-text]
