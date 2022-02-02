@@ -190,7 +190,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 #### Generate a key with random salt
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt --out-file dev-resources/secure/passphrase.key
 ```
 
 ```bash
@@ -201,7 +201,7 @@ Kpow Secure Key:
 
 nP+O/6xOu9+9+JZFYgfhS+R6x4OjVgToP9DlM1bx35g=
 
-Key file written to: dev-resources/secure/passphrase.txt.key
+Key file written to: dev-resources/secure/passphrase.key
 
 Random salt used, this key cannot be regenerated.
 ```
@@ -294,7 +294,7 @@ Kpow Encrypted:
 #### View the encrypted payload
 
 ```bash
-cat dev-resources/secure/config.env.aes
+cat dev-resources/secure/config.aes
 ```
 
 ```bash
@@ -306,27 +306,19 @@ ARD9I/BlocgOwYfsW/oXrJtY/u2AnMWm/ewWIm7iDJrSkkGnQbM38ZbCM1hWfYZLHpIo99LATlgtnR4r
 #### Decrypt the payload
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt dev-resources/secure/config.env.aes --key-file dev-resources/secure/passphrase.txt.key
+java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt-file dev-resources/secure/config.aes --key-file dev-resources/secure/passphrase.key
 ```
 
 ```bash
-19:58:27.901 [main] INFO kpow.secure -
+22:40:11.998 [main] INFO kpow.secure -
 
-Decrypted: dev-resources/secure/config.env.aes > dev-resources/secure/config.env.aes.plain
-```
+Kpow Decrypted:
+---------------
 
-#### View the decrypted plaintext
-
-```bash
-cat dev-resources/secure/config.env.aes.plain
-```
-
-```bash
 SECURITY_PROTOCOL=SASL_PLAINTEXT
 SASL_MECHANISM=PLAIN
 SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="kpow" password="kpow-secret";
-SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks
-SSL_TRUSTSTORE_PASSWORD=password1234
+SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks```
 ```
 
 ## Java API
