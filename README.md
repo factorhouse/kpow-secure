@@ -48,7 +48,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => #object[javax.crypto.spec.SecretKeySpec 0x5c2ac756 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
 ```
 
-## Key Serialization
+### Key Serialization
 
 #### Serialize a key to base64 text
 
@@ -70,7 +70,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => #object[javax.crypto.spec.SecretKeySpec 0x3d2b5928 "javax.crypto.spec.SecretKeySpec@fffe96a4"]
 ```
 
-## Encryption
+### Encryption
 
 #### Encrypted payload from base64 encoded key and plain text
 
@@ -98,7 +98,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0="
 ```
 
-## Payload Decryption
+### Decryption
 
 #### Plain text from serialized key and encrypted payload
 
@@ -124,7 +124,7 @@ See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secu
 => "SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234"
 ```
 
-## Payload Interpretation
+### Interpretation
 
 Kpow-Secure will interpret payloads where the plain-text is in `java.util.Properties` format.
 
@@ -225,7 +225,7 @@ Key file written to: dev-resources/secure/mykey.aes
 This key can be regenerated with the same passphrase and salt.
 ```
 
-## Payload Encryption
+### Encryption
 
 #### Show the help menu
 
@@ -246,7 +246,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
   -h, --help
 ```
 
-* Encrypt a plain-text file
+#### Encrypt a plain-text file
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.txt.key
@@ -258,7 +258,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt dev-resou
 Encrypted: dev-resources/secure/config.env > dev-resources/secure/config.env.aes
 ```
 
-* Confirm the encrypted payload
+#### View the encrypted payload
 
 ```bash
 cat dev-resources/secure/config.env.aes
@@ -268,7 +268,9 @@ cat dev-resources/secure/config.env.aes
 ARD9I/BlocgOwYfsW/oXrJtY/u2AnMWm/ewWIm7iDJrSkkGnQbM38ZbCM1hWfYZLHpIo99LATlgtnR4rcSjDIEY01wZTsZUyxLXKMoH1sX31FwoywxjmGPooMQg2d6VIHpLGeTsrmD1HQ2U9miIr01w5moMy4U6/UTAm1o+f8xGmR5l2sMj59tddK5VTC9BRs0L4ptxj+bR/QhItwL2qnqExnsEBTUOwrrTiHZySXhr8iJWvD1WIFL374KmneLxFhqMuIiY1D3v9/ChlyCojvh5JR6pJ3ZuIK3HP2YbjZSTSliz7mV5hMI021E4MN8hWE4L3poLhHY5KWVVb6Ma5kQAt2M5t9Ij8HkdtjMgxrva+kCtXUg81F9WoWmsc3xQcY5o=
 ```
 
-* Decrypt the payload
+### Decryption
+
+#### Decrypt the payload
 
 ```bash
 java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt dev-resources/secure/config.env.aes --key-file dev-resources/secure/passphrase.txt.key
@@ -280,7 +282,7 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt dev-resou
 Decrypted: dev-resources/secure/config.env.aes > dev-resources/secure/config.env.aes.plain
 ```
 
-* Confirm the decrypted plain-text
+#### View the decrypted plain text
 
 ```bash
 cat dev-resources/secure/config.env.aes.plain
@@ -300,7 +302,7 @@ Kpow Secure is implemented in our langauge of choice, Clojure.
 
 We provide a basic Decoder API in Java to allow encrypted payloads to be decoded to `java.lang.String` or `java.util.Properties`
 
-* Decode payload text to `java.lang.String`
+#### Decrypt payload to with base64 key to `java.lang.String`
 
 ```java
 String plainText = Decoder.text("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
@@ -311,7 +313,7 @@ String plainText = Decoder.text("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", 
 SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234
 ```
 
-* Decode payload file with a serialized key file to `java.util.Properties`
+#### Decrypt payload file with a base64 key file to `java.util.Properties`
 
 ```java
 Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/config.env.aes");
@@ -327,7 +329,7 @@ Properties myProps = Decoder.loadProperties("/path/to/your.key", "/path/to/confi
  "ssl.truststore.password" "1234"}
 ``` 
 
-* Decode payload text with a serialized key to `java.util.Properties`
+#### Decrypt payload with bas64 key to `java.util.Properties`
 
 ```java
 Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
