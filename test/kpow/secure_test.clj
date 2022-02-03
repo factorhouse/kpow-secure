@@ -7,6 +7,15 @@
 (def sample-input (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
                        "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))
 
+(deftest prefixed?
+
+  (is (secure/prefixed? "AES:abc"))
+  (is (not (secure/prefixed? "aes:abc")))
+  (is (not (secure/prefixed? "aesabc")))
+  (is (not (secure/prefixed? "abc")))
+  (is (not (secure/prefixed? "")))
+  (is (not (secure/prefixed? nil))))
+
 (deftest error-cases
 
   (is (thrown? IllegalArgumentException

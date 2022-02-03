@@ -13,10 +13,15 @@
   (:gen-class))
 
 (def kpow-secure-key "KPOW_SECURE_KEY")
+(def prefix "AES:")
 
 ;; scheme version static as v1 for now and encoded into the message as first byte
 (def scheme-v1 (unchecked-byte 1))
 (def cipher-algorithm "AES/CBC/PKCS5Padding")
+
+(defn prefixed?
+  [input]
+  (and input (.startsWith input prefix)))
 
 (defn random-iv
   "Generate a 16-byte random IvParameterSpec"
