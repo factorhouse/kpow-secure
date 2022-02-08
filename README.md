@@ -12,7 +12,7 @@ Can be used standalone or integrated with your application. This library provide
 
 This library is used as one option to secure configuration for [kPow for Apache Kafka](https://kpow.io).
 
-See the [kPow Secure Configuration Guide](https://kpow.io) for specifics on secure configuration for kPow.
+See the [kPow Secure Configuration Guide](https://github.com/operatr-io/kpow/tree/main/secure-config) for specifics on secure configuration for kPow.
 
 ## Capabilities
 
