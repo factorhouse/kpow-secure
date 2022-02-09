@@ -24,6 +24,10 @@ See the [kPow Secure Configuration Guide](https://github.com/operatr-io/kpow/tre
  * CLI interface for key generation and encryption / decryption
  * Java API for easy decryption of payload into `java.util.String` or `java.util.Properties`
 
+## License
+
+This project is released under the Apache 2.0 license.
+
 ## Clojure Implementation
 
 ### Key Generation
