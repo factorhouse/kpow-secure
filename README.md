@@ -330,7 +330,7 @@ SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks```
 
 Kpow Secure is implemented in our langauge of choice, Clojure.
 
-Use the Java Decoder API to decrypt payloads `java.lang.String` or `java.util.Properties`.
+Use the Java `io.kpow.secure.Decoder` to decrypt payloads `java.lang.String` or `java.util.Properties`.
 
 #### Decrypt payload to java.lang.String with base64 key text
 
