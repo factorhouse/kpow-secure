@@ -13,6 +13,8 @@
   (:gen-class))
 
 (def kpow-secure-key "KPOW_SECURE_KEY")
+(def kpow-secure-key-location "KPOW_SECURE_KEY_LOCATION")
+
 (def prefix "AES:")
 
 ;; scheme version static as v1 for now and encoded into the message as first byte
@@ -81,14 +83,24 @@
         (.get buffer cypher-bytes)
         (plaintext secret-key (IvParameterSpec. iv-bytes) cypher-bytes)))))
 
-(defn env-key
-  "Retrieve an encoded encryption key from the kpow-secure-key environment variable"
+(def load-key
+  (memoize
+   (fn []
+     (when-let [key-location (System/getenv kpow-secure-key-location)]
+       (try
+         (slurp key-location)
+         (catch Exception ex
+           (log/errorf ex "Key file not found at path %s" key-location)))))))
+
+(defn lookup-key
+  "Retrieve an encoded encryption key from the kpow-secure-key environment variable or location"
   []
-  (System/getenv kpow-secure-key))
+  (or (System/getenv kpow-secure-key)
+      (load-key)))
 
 (defn encrypted
   ([plaintext]
-   (encrypted (env-key) plaintext))
+   (encrypted (lookup-key) plaintext))
   ([key-text plaintext]
    (when (str/blank? key-text)
      (throw (IllegalArgumentException. "No key provided")))
@@ -98,7 +110,7 @@
 
 (defn decrypted
   ([payload-text]
-   (decrypted (env-key) payload-text))
+   (decrypted (lookup-key) payload-text))
   ([key-text payload-text]
    (when (str/blank? key-text)
      (throw (IllegalArgumentException. "No key provided")))

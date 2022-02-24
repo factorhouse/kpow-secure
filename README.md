@@ -23,6 +23,7 @@ See the [kPow Secure Configuration Guide](https://github.com/operatr-io/kpow/tre
  * Payload interpretation (decrypt config into `java.util.Properties` or `clojure.lang.PersistentArrayMap`)
  * CLI interface for key generation and encryption / decryption
  * Java API for easy decryption of payload into `java.util.String` or `java.util.Properties`
+ * Key lookup via KPOW_SECURE_KEY or KPOW_SECURE_KEY_LOCATION environment variables
 
 ## License
 
@@ -342,7 +343,7 @@ String plainText = Decoder.text("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zzjR88=", 
 SSL_KEYSTORE_PASSWORD=keypass1234\nSSL_TRUSTSTORE_PASSWORD=trustpass1234
 ```
 
-#### Decrypt payload to java.lang.String where key is expected in KPOW_SECURE_KEY env var
+#### Decrypt payload to java.lang.String where key is expected in KPOW_SECURE_KEY environment variable or at KPOW_SECURE_KEY_LOCATION
 
 ```java
 String plainText = Decoder.text( "ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
@@ -366,7 +367,7 @@ Properties myProps = Decoder.properties("//iQh9KYe7pM+mevjifZPrm7YE2+rRloG1E15zz
  "SSL_KEYSTORE_PASSWORD"   "keypass1234"}
 ``` 
 
-#### Decrypt payload to java.util.Properties where key is expected in KPOW_SECURE_KEY env var
+#### Decrypt payload to java.util.Properties where key is expected in KPOW_SECURE_KEY environment variable or at KPOW_SECURE_KEY_LOCATION
 
 ```java
 Properties myProps = Decoder.properties("ARAOGa3BAZ2TMxbU1aj+tFYfNHNwnRh3r/w2sG7FA4L7fVRzArpzrxAd2dUovyDfel++FHgW1IFrinZddTo+KiYFYm2rsn+ul65eQ1L5t9MsBq3LpuGjoFDSxkYFZweo/w0=");
