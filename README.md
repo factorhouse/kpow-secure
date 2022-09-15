@@ -12,9 +12,9 @@ Can be used standalone or integrated with your application. This library provide
 * [Command line interface](https://github.com/operatr-io/kpow-secure/blob/main/README.md#command-line-interface)
 * [Java decryption API](https://github.com/operatr-io/kpow-secure/blob/main/README.md#java-api)
 
-This library is used as an option to secure configuration for [kPow for Apache Kafka](https://kpow.io) since [v88.2](https://kpow.io/releases/88-2/).
+This library is used as an option to secure configuration for [Kpow for Apache Kafka](https://kpow.io) since [v88.2](https://kpow.io/releases/88-2/).
 
-See the [kPow Secure Configuration Guide](https://github.com/operatr-io/kpow/tree/main/secure-config) for specifics on secure configuration for kPow.
+See the [Kpow Secure Configuration Guide](https://github.com/operatr-io/kpow/tree/main/secure-config) for specifics on secure configuration for Kpow.
 
 ## Capabilities
 
