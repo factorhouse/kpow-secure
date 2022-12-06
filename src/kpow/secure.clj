@@ -7,9 +7,9 @@
            (java.nio ByteBuffer)
            (java.nio.charset StandardCharsets)
            (java.security SecureRandom)
-           (javax.crypto SecretKey Cipher)
-           (javax.crypto.spec IvParameterSpec)
-           (java.util Base64 Properties))
+           (java.util Base64 Properties)
+           (javax.crypto Cipher SecretKey)
+           (javax.crypto.spec IvParameterSpec))
   (:gen-class))
 
 (def kpow-secure-key "KPOW_SECURE_KEY")
@@ -22,7 +22,7 @@
 (def cipher-algorithm "AES/CBC/PKCS5Padding")
 
 (defn prefixed?
-  [input]
+  [^String input]
   (and input (.startsWith input prefix)))
 
 (defn random-iv
@@ -140,7 +140,7 @@
 
 (defn process
   [encrypt? key-text target-text out-file]
-  (let [text     (if encrypt? (encrypted key-text target-text) (decrypted key-text target-text))]
+  (let [text (if encrypt? (encrypted key-text target-text) (decrypted key-text target-text))]
     (if out-file
       (text-file text out-file encrypt?)
       (log-text text encrypt?))))

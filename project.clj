@@ -1,26 +1,34 @@
-(defproject io.operatr/kpow-secure "1.0.0"
+(defproject io.factorhouse/kpow-secure "1.0.0"
 
   :description "Secure Key Generation and Payload Encryption"
 
-  :source-paths ["src"]
-  :java-source-paths ["src-java"]
-  :test-paths ["test"]
+  :url "https://github.com/factorhouse/kpow-secure"
 
-  :dependencies [[org.clojure/clojure "1.10.3"]
-                 [org.clojure/tools.cli "1.0.206"]
+  :license {:name "Apache 2.0 License"
+            :url  "https://github.com/factorhouse/kpow-secure/blob/main/LICENSE"}
+
+
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [org.clojure/tools.cli "1.0.214"]
                  [org.clojure/tools.logging "1.2.4"]
-                 [ch.qos.logback/logback-classic "1.2.10"]]
+                 [ch.qos.logback/logback-classic "1.2.11"]]
 
   :profiles {:dev     {:plugins        [[lein-cljfmt "0.8.0"]]
-                       :dependencies   [[clj-kondo "2022.01.15"]]
+                       :dependencies   [[clj-kondo "2022.11.02"]]
                        :resource-paths ["dev-resources"]}
              :uberjar {:aot :all}}
 
   :aliases {"smoke" ["do"
                      ["clean"]
                      ["check"]
-                     ["test"]
                      ["cljfmt" "check"]
-                     ["run" "-m" "clj-kondo.main" "--lint" "src:test" "--parallel"]]}
+                     ["run" "-m" "clj-kondo.main" "--lint" "src:test" "--parallel"]
+                     ["test"]]}
+
+  :source-paths ["src"]
+
+  :test-paths ["test"]
+
+  :java-source-paths ["src-java"]
 
   :pedantic? :abort)

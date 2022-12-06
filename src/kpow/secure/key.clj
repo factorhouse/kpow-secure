@@ -2,11 +2,11 @@
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log])
-  (:import (java.security SecureRandom)
+  (:import (java.nio.charset StandardCharsets)
+           (java.security SecureRandom)
+           (java.util Base64)
            (javax.crypto SecretKey SecretKeyFactory)
-           (javax.crypto.spec SecretKeySpec PBEKeySpec)
-           (java.nio.charset StandardCharsets)
-           (java.util Base64))
+           (javax.crypto.spec PBEKeySpec SecretKeySpec))
   (:gen-class))
 
 (def key-enc-algorithm "AES")
