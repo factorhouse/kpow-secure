@@ -4,7 +4,7 @@
 
   :url "https://github.com/factorhouse/kpow-secure"
 
-  :license {:name "Apache 2.0 License"
+  :license {:name "MIT License"
             :url  "https://github.com/factorhouse/kpow-secure/blob/main/LICENSE"}
 
 

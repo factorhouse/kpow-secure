@@ -29,7 +29,7 @@ See the [Kpow Secure Configuration Guide](https://github.com/operatr-io/kpow/tre
 
 ## License
 
-This project is released under the Apache 2.0 license.
+This project is released under the MIT license.
 
 ## Clojure Implementation
 
