@@ -20,6 +20,9 @@ jobs:
 
       - name: Install clojure tools
         uses: DeLaGuardo/setup-clojure@4.0
-
+        with:
+          lein: 'latest'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Run tests
         run: lein smoke
