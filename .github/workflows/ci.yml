@@ -1,4 +1,4 @@
-name: Kpow secure test
+name: Kpow Secure Test
 
 on: [ push ]
 
@@ -23,6 +23,6 @@ jobs:
         with:
           lein: 'latest'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Run tests
         run: lein smoke
