@@ -12,7 +12,6 @@ Can be used standalone or integrated with your application. This library provide
 
 * [Clojure implementation](https://github.com/operatr-io/kpow-secure/blob/main/README.md#clojure-implementation)
 * [Command line interface](https://github.com/operatr-io/kpow-secure/blob/main/README.md#command-line-interface)
-* [Java decryption API](https://github.com/operatr-io/kpow-secure/blob/main/README.md#java-api)
 
 This library is used as an option to secure configuration for [Kpow for Apache Kafka](https://kpow.io) since [v88.2](https://kpow.io/releases/88-2/).
 
