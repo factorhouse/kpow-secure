@@ -15,8 +15,7 @@
 
   :profiles {:dev     {:plugins        [[lein-cljfmt "0.8.0"]]
                        :dependencies   [[clj-kondo "2022.11.02"]]
-                       :resource-paths ["dev-resources"]}
-             :uberjar {:aot :all}}
+                       :resource-paths ["dev-resources"]}}
 
   :aliases {"smoke" ["do"
                      ["clean"]
