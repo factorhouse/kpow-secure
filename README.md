@@ -1,6 +1,8 @@
 # Kpow Secure: Key Generation and Payload Encryption
 
 [![Kpow secure test](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml/badge.svg)](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml)
+[![Clojars Project](https://img.shields.io/clojars/v/io.factorhouse/kpow-secure.svg)](https://clojars.org/io.factorhouse/kpow-secure)
+
 
 A library for encrypted Kafka configuration with Java AES encryption and PBKDF2 master key generation.
 
