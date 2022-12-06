@@ -1,6 +1,6 @@
 # Kpow Secure: Key Generation and Payload Encryption
 
-[![CircleCI](https://circleci.com/gh/factorhouse/kpow-secure.svg?style=svg&circle-token=6e95b380dbe34c368a074c2c061053cebaa1a29d)](https://circleci.com/gh/factorhouse/kpow-secure)
+[![Kpow secure test](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml/badge.svg)](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml)
 
 A library for encrypted Kafka configuration with Java AES encryption and PBKDF2 master key generation.
 
