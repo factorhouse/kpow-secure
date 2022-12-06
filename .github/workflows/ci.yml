@@ -15,7 +15,5 @@ jobs:
 
       - name: Install clojure tools
         uses: DeLaGuardo/setup-clojure@4.0
-        with:
-          lein: latest
-
+        
       - run: lein smoke
