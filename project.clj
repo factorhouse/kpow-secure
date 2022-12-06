@@ -1,4 +1,4 @@
-(defproject io.factorhouse/kpow-secure "1.0.2"
+(defproject io.factorhouse/kpow-secure "1.0.3"
 
   :description "Secure Key Generation and Payload Encryption"
 
