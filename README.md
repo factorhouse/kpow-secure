@@ -328,3 +328,9 @@ SASL_MECHANISM=PLAIN
 SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="kpow" password="kpow-secret";
 SSL_TRUSTSTORE_LOCATION=/ssl/truststore.jks```
 ```
+
+## License
+
+Distributed under the Apache 2.0 License.
+
+Copyright (c) [Factor House](https://factorhouse.io)
