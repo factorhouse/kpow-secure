@@ -10,12 +10,12 @@ Encrypted configuration is **not a replacement for secret managers**, but may he
 
 Can be used standalone or integrated with your application. This library provides:
 
-* [Clojure implementation](https://github.com/operatr-io/kpow-secure/blob/main/README.md#clojure-implementation)
-* [Command line interface](https://github.com/operatr-io/kpow-secure/blob/main/README.md#command-line-interface)
+* [Clojure implementation](https://github.com/factorhouse/kpow-secure/blob/main/README.md#clojure-implementation)
+* [Command line interface](https://github.com/factorhouse/kpow-secure/blob/main/README.md#command-line-interface)
 
 This library is used as an option to secure configuration for [Kpow for Apache Kafka](https://kpow.io) since [v88.2](https://kpow.io/releases/88-2/).
 
-See the [Kpow Secure Configuration Guide](https://github.com/operatr-io/kpow/tree/main/secure-config) for specifics on secure configuration for Kpow.
+See the [Kpow Secure Configuration Guide](https://github.com/factorhouse/kpow/tree/main/secure-config) for specifics on secure configuration for Kpow.
 
 ## Capabilities
 
