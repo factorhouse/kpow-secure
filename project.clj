@@ -1,20 +1,20 @@
-(defproject io.factorhouse/kpow-secure "1.0.3"
+(defproject io.factorhouse/shroud "1.0.4"
 
   :description "Secure Key Generation and Payload Encryption"
 
-  :url "https://github.com/factorhouse/kpow-secure"
+  :url "https://github.com/factorhouse/shroud"
 
   :license {:name "MIT License"
-            :url  "https://github.com/factorhouse/kpow-secure/blob/main/LICENSE"}
+            :url  "https://github.com/factorhouse/shroud/blob/main/LICENSE"}
 
 
-  :dependencies [[org.clojure/clojure "1.11.1"]
-                 [org.clojure/tools.cli "1.0.214"]
-                 [org.clojure/tools.logging "1.2.4"]
-                 [ch.qos.logback/logback-classic "1.2.11"]]
+  :dependencies [[org.clojure/clojure "1.12.0"]
+                 [org.clojure/tools.cli "1.1.230"]
+                 [org.clojure/tools.logging "1.3.0"]
+                 [ch.qos.logback/logback-classic "1.5.16"]]
 
-  :profiles {:dev     {:plugins        [[lein-cljfmt "0.8.0"]]
-                       :dependencies   [[clj-kondo "2022.11.02"]]
+  :profiles {:dev     {:plugins        [[dev.weavejester/lein-cljfmt "0.13.0"]]
+                       :dependencies   [[clj-kondo "2025.01.16"]]
                        :resource-paths ["dev-resources"]}
              :uberjar {:aot :all}}
 

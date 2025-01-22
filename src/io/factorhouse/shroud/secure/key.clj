@@ -1,4 +1,4 @@
-(ns kpow.secure.key
+(ns io.factorhouse.shroud.secure.key
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log])
@@ -49,7 +49,7 @@
   [pass-file salt out-file]
   (let [secure-key (export-key (secret-key (slurp pass-file) salt))]
     (spit out-file secure-key)
-    (log/info (format "\n\nKpow Secure Key:\n----------------\n\n%s\n\nKey file written to: %s\n\n%s"
+    (log/info (format "\n\nShroud Key:\n----------------\n\n%s\n\nKey file written to: %s\n\n%s"
                       secure-key
                       out-file
                       (if salt

@@ -1,6 +1,6 @@
-(ns kpow.secure.key-test
+(ns io.factorhouse.shroud.secure.key-test
   (:require [clojure.test :refer [deftest is]]
-            [kpow.secure.key :as key]))
+            [io.factorhouse.shroud.secure.key :as key]))
 
 (deftest key-gen-and-export-import
 

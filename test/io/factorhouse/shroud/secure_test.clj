@@ -1,7 +1,7 @@
-(ns kpow.secure-test
+(ns io.factorhouse.shroud.secure-test
   (:require [clojure.test :refer [deftest is]]
-            [kpow.secure :as secure]
-            [kpow.secure.key :as key]))
+            [io.factorhouse.shroud.secure :as secure]
+            [io.factorhouse.shroud.secure.key :as key]))
 
 (def sample-input (str "SSL_KEYSTORE_PASSWORD=keypass1234\n"
                        "SSL_TRUSTSTORE_PASSWORD=trustpass1234"))

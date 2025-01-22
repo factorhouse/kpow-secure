@@ -1,7 +1,7 @@
-# Kpow Secure: Key Generation and Payload Encryption
+# Shroud: Key Generation and Payload Encryption
 
-[![Kpow secure test](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml/badge.svg)](https://github.com/factorhouse/kpow-secure/actions/workflows/ci.yml)
-[![Clojars Project](https://img.shields.io/clojars/v/io.factorhouse/kpow-secure.svg)](https://clojars.org/io.factorhouse/kpow-secure)
+[![Kpow secure test](https://github.com/factorhouse/shroud/actions/workflows/ci.yml/badge.svg)](https://github.com/factorhouse/shroud/actions/workflows/ci.yml)
+[![Clojars Project](https://img.shields.io/clojars/v/io.factorhouse/shroud.svg)](https://clojars.org/io.factorhouse/shroud)
 
 
 A library for encrypted Kafka configuration with Java AES encryption and PBKDF2 master key generation.
@@ -10,12 +10,12 @@ Encrypted configuration is **not a replacement for secret managers**, but may he
 
 Can be used standalone or integrated with your application. This library provides:
 
-* [Clojure implementation](https://github.com/factorhouse/kpow-secure/blob/main/README.md#clojure-implementation)
-* [Command line interface](https://github.com/factorhouse/kpow-secure/blob/main/README.md#command-line-interface)
+* [Clojure implementation](https://github.com/factorhouse/shroud/blob/main/README.md#clojure-implementation)
+* [Command line interface](https://github.com/factorhouse/shroud/blob/main/README.md#command-line-interface)
 
 This library is used as an option to secure configuration for [Kpow for Apache Kafka](https://kpow.io) since [v88.2](https://kpow.io/releases/88-2/).
 
-See the [Kpow Secure Configuration Guide](https://github.com/factorhouse/kpow/tree/main/secure-config) for specifics on secure configuration for Kpow.
+See the [Shroud Configuration Guide](https://github.com/factorhouse/kpow/tree/main/secure-config) for specifics on secure configuration for Kpow.
 
 ## Capabilities
 
@@ -26,7 +26,7 @@ See the [Kpow Secure Configuration Guide](https://github.com/factorhouse/kpow/tr
  * Payload interpretation (decrypt config into `java.util.Properties` or `clojure.lang.PersistentArrayMap`)
  * CLI interface for key generation and encryption / decryption
  * Java API for easy decryption of payload into `java.util.String` or `java.util.Properties`
- * Key lookup via KPOW_SECURE_KEY or KPOW_SECURE_KEY_LOCATION environment variables
+ * Key lookup via SHROUD_KEY or SHROUD_KEY_LOCATION environment variables
 
 ## License
 
@@ -183,11 +183,11 @@ The passphrase is read from a local file to ensure it is not observable in your 
 #### Show the help menu
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud.key --help
 ```
 
 ```bash
-21:27:09.090 [main] INFO kpow.secure.key -
+21:27:09.090 [main] INFO io.factorhouse.shroud.key -
 
   -p, --pass-file PASSPHRASE-FILE  (required) File containing key passphrase
   -s, --salt SALT                  (optional) Salt to use with key generation, random if none provided
@@ -198,13 +198,13 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --help
 #### Generate a key with random salt
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt --out-file dev-resources/secure/passphrase.key
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud.key --pass-file dev-resources/secure/passphrase.txt --out-file dev-resources/secure/passphrase.key
 ```
 
 ```bash
-19:46:50.912 [main] INFO kpow.secure.key -
+19:46:50.912 [main] INFO io.factorhouse.shroud.key -
 
-Kpow Secure Key:
+Shroud Key:
 ----------------
 
 nP+O/6xOu9+9+JZFYgfhS+R6x4OjVgToP9DlM1bx35g=
@@ -217,13 +217,13 @@ Random salt used, this key cannot be regenerated.
 #### Generate a key with chosen salt
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure.key --pass-file dev-resources/secure/passphrase.txt --salt abcdef --out-file dev-resources/secure/mykey.aes
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud.key --pass-file dev-resources/secure/passphrase.txt --salt abcdef --out-file dev-resources/secure/mykey.aes
 ```
 
 ```bash
-19:48:01.933 [main] INFO kpow.secure.key -
+19:48:01.933 [main] INFO io.factorhouse.shroud.key -
 
-Kpow Secure Key:
+Shroud Key:
 ----------------
 
 88wRMz4DuaRWOmyKPb8IgmY4kZAyQvPiRVxUy79OgL8=
@@ -238,11 +238,11 @@ This key can be regenerated with the same passphrase and salt.
 #### Show the help menu
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud --help
 ```
 
 ```bash
-23:01:46.551 [main] INFO kpow.secure -
+23:01:46.551 [main] INFO io.factorhouse.shroud -
 
       --key TEXT           Base64 encoded key
       --key-file FILE      File containing base64 encoded key
@@ -257,11 +257,11 @@ java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --help
 #### Encrypt text directly on the command line 
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt supersecrettext --key 88wRMz4DuaRWOmyKPb8IgmY4kZAyQvPiRVxUy79OgL8=
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud --encrypt supersecrettext --key 88wRMz4DuaRWOmyKPb8IgmY4kZAyQvPiRVxUy79OgL8=
 ```
 
 ```bash
-22:19:30.511 [main] INFO kpow.secure -
+22:19:30.511 [main] INFO io.factorhouse.shroud -
 
 Kpow Encrypted:
 ---------------
@@ -272,11 +272,11 @@ ARB41R5ZsMNkjNnr3YD+RK2wT6ywAgR0KpcCpLYH/g3rxQ==
 #### Decrypt text directly on the command line 
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt ARDO7O0legO6PFvIGq/ILD/gekC43knuHqCxhvJoyOeCBw== --key-file dev-resources/secure/passphrase.key
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud --decrypt ARDO7O0legO6PFvIGq/ILD/gekC43knuHqCxhvJoyOeCBw== --key-file dev-resources/secure/passphrase.key
 ```
 
 ```bash
-22:21:16.491 [main] INFO kpow.secure -
+22:21:16.491 [main] INFO io.factorhouse.shroud -
 
 Kpow Decrypted:
 ---------------
@@ -287,11 +287,11 @@ supersecrettext
 #### Encrypt a plaintext file
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --encrypt-file dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.key --out-file dev-resources/secure/config.aes
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud --encrypt-file dev-resources/secure/config.env --key-file dev-resources/secure/passphrase.key --out-file dev-resources/secure/config.aes
 ```
 
 ```bash
-22:33:28.807 [main] INFO kpow.secure -
+22:33:28.807 [main] INFO io.factorhouse.shroud -
 
 Kpow Encrypted:
 ---------------
@@ -314,11 +314,11 @@ ARD9I/BlocgOwYfsW/oXrJtY/u2AnMWm/ewWIm7iDJrSkkGnQbM38ZbCM1hWfYZLHpIo99LATlgtnR4r
 #### Decrypt the payload
 
 ```bash
-java -cp target/kpow-secure-1.0.0-standalone.jar kpow.secure --decrypt-file dev-resources/secure/config.aes --key-file dev-resources/secure/passphrase.key
+java -cp target/shroud-1.0.0-standalone.jar io.factorhouse.shroud --decrypt-file dev-resources/secure/config.aes --key-file dev-resources/secure/passphrase.key
 ```
 
 ```bash
-22:40:11.998 [main] INFO kpow.secure -
+22:40:11.998 [main] INFO io.factorhouse.shroud -
 
 Kpow Decrypted:
 ---------------
