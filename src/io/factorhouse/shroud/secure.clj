@@ -1,8 +1,8 @@
-(ns kpow.secure
+(ns io.factorhouse.shroud.secure
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
             [clojure.tools.logging :as log]
-            [kpow.secure.key :as key])
+            [io.factorhouse.shroud.secure.key :as key])
   (:import (java.io StringReader)
            (java.nio ByteBuffer)
            (java.nio.charset StandardCharsets)
@@ -12,8 +12,8 @@
            (javax.crypto.spec IvParameterSpec))
   (:gen-class))
 
-(def kpow-secure-key "KPOW_SECURE_KEY")
-(def kpow-secure-key-location "KPOW_SECURE_KEY_LOCATION")
+(def shroud-key "SHROUD_KEY")
+(def shroud-key-location "SHROUD_KEY_LOCATION")
 
 (def prefix "AES:")
 
@@ -86,16 +86,16 @@
 (def load-key
   (memoize
    (fn []
-     (when-let [key-location (System/getenv kpow-secure-key-location)]
+     (when-let [key-location (System/getenv shroud-key-location)]
        (try
          (slurp key-location)
          (catch Exception ex
            (log/errorf ex "Key file not found at path %s" key-location)))))))
 
 (defn lookup-key
-  "Retrieve an encoded encryption key from the kpow-secure-key environment variable or location"
+  "Retrieve an encoded encryption key from the shroud-key environment variable or location"
   []
-  (or (System/getenv kpow-secure-key)
+  (or (System/getenv shroud-key)
       (load-key)))
 
 (defn encrypted
